@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{ulem}
+
+\geometry{left = 2cm, right = 2cm}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}
+                                {-5ex plus -.5ex minus -.2ex}
+                                {3ex plus .2ex}
+                                {\normalfont\large\bfseries}}
+\makeatother
+\title{Homework 2}
+\author{PB17000297 罗晏宸}
+\date{March 10 2020}
+
+\begin{document}
+\maketitle
+
+\section{请使用关系代数的 5 个基本运算表示交、自然连接、Theta 连接以及除操作。}
+
+\section{给定下面的关系模式：图书（\uline{图书号}，书名，作者，单价，库存量），读者（\uline{读者号}，姓名，工作单位，地址），借阅（\uline{图书号，读者号，借期}，还期，备注） \protect\\ 请使用关系代数表达式回答下列查询（注意：字符串须用单引号括起来）：}
+\subparagraph{(1)} 检索读者 Rose 的工作单位和地址；
+\subparagraph{(2)} 检索读者 Rose 所借阅过的图书的图书名和借期；
+\subparagraph{(3)} 检索未借阅图书的读者姓名；
+\subparagraph{(4)} 检索 Ullman 所写的书的书名和单价；
+\subparagraph{(5)} 检索借阅图书数目超过 3 本的读者姓名。
+
+\section{T1 教材的首页给出了一个供应商、零件、工程数据库：
+\protect\\ \indent 供应商：S (S\#, sname, status, city)
+\protect\\ \indent 零件：P (P\#, pname, color, weight, city)
+\protect\\ \indent 工程：J(J\#, jname, city)
+\protect\\ \indent 供应：SPJ (S\#, J\#, P\#, QTY) 表示供应商 S\#为工程 J\#供应了 QTY 数量的零件 P\#
+\protect\\ 请写出下列查询的关系代数表达式：}
+\subparagraph{(1)} 求每个供应商的供应商号以及该供应商供应的平均零件数量；
+\subparagraph{(2)} 求每个工程的工程号以及该工程中所使用的每种零件的零件号以及数量；
+\subparagraph{(3)} 求供应零件总量在 300 以上的供应商号和供应商名字；
+\subparagraph{(4)} 增加一个新的工程$\{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\}$到 J 中。并且，我们要求每个供应商按当前提供给其它工程的最大零件数将零提供给该新工程（比如：S1 为 J1 和 J2 提供零件P1，数量分别为 100 和 200，则要求 S1 按最大零件数 200 为 J00 提供零件 P1），请将相应信息插入到 SPJ 中；
+\subparagraph{(5)} 将供应商号为'S1'的供应商的 city 改为'合肥'；
+
+\end{document}

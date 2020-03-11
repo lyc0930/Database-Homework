@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/W32TeX) (preloaded format=xelatex 2019.9.21)  10 MAR 2020 09:04
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/W32TeX) (preloaded format=xelatex 2019.9.21)  11 MAR 2020 12:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -602,26 +602,25 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-[1
-
-]
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <10.53937> not available
-(Font)              size <10.95> substituted on input line 42.
+(Font)              size <10.95> substituted on input line 27.
 
-[2] (./PB17000297_罗晏宸.aux)
+[1
+
+] [2] [3] (./PB17000297_罗晏宸.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.41063pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 17135 strings out of 492909
- 396571 string characters out of 6130813
- 454533 words of memory out of 5000000
- 21056 multiletter control sequences out of 15000+600000
- 559108 words of font info for 75 fonts, out of 8000000 for 9000
+ 17159 strings out of 492909
+ 397589 string characters out of 6130813
+ 455533 words of memory out of 5000000
+ 21075 multiletter control sequences out of 15000+600000
+ 565111 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 54i,6n,68p,374b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 54i,9n,68p,374b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on PB17000297_罗晏宸.pdf (2 pages).
+Output written on PB17000297_罗晏宸.pdf (3 pages).

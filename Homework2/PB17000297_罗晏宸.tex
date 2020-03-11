@@ -28,16 +28,18 @@
 
 交$\cap$、自然连接$\Join$、Theta 连接$\Join_{\theta}$、除$\div$可分别用基本运算表示如下：
 
+\begin{Large}
 \begin{align*}
     r \cap s & = r - (r - s) \\
     r \Join s & = \Pi_{R \cup S}(\sigma_{r.A_1 = s.A_1 \land r.A_2 = s.A_2 \land \cdots \land r.A_n = s.A_n}(r \times s)) \\
     r \Join_{\theta} s & = \sigma_{\theta}(r \times s) \\
     r \div s & = \Pi_{R - S}(r) - \Pi_{R - S}((\Pi_{R - S}(r) \times s) - \Pi_{R - S}(r))
 \end{align*}
+\end{Large}
 
 其中$r(R)$和$s(S)$是两个关系，$\theta$是模式$R \cup S$的属性上的谓词，对于除操作，还应有$S \subseteq R$。
 
-\section{给定下面的关系模式：图书（\uline{图书号}，书名，作者，单价，库存量），读者（\uline{读者号}，姓名，工作单位，地址），借阅（\uline{图书号，读者号，借期}，还期，备注） \protect\\ 请使用关系代数表达式回答下列查询（注意：字符串须用单引号括起来）：}
+\section{给定下面的关系模式：{\kaishu 图书（ \uline{图书号}，书名，作者，单价，库存量）}，{\kaishu 读者（ \uline{读者号}，姓名，工作单位，地址）}，{\kaishu 借阅（ \uline{图书号，读者号，借期}，还期，备注）} \protect\\ 请使用关系代数表达式回答下列查询（注意：字符串须用单引号括起来）：}
 \subparagraph{(1)} 检索读者 Rose 的工作单位和地址；
 \subparagraph{(2)} 检索读者 Rose 所借阅过的图书的图书名和借期；
 \subparagraph{(3)} 检索未借阅图书的读者姓名；
@@ -46,30 +48,47 @@
 
 \paragraph{解}
 \subparagraph{(1)}
+{ \kaishu
+\begin{Large}
 \begin{equation*}
-    \Pi_{\text{工作单位, 地址}}(\sigma_{\text{姓名 = 'Rose'}}(\text{读者}))
+    \Pi_{\text{工作单位}, \text{地址}}(\sigma_{\text{姓名} = \text{'Rose'}}(\text{读者}))
 \end{equation*}
+\end{Large}
+
 \subparagraph{(2)}
+\begin{Large}
 \begin{equation*}
-    \Pi_{\text{书名, 借期}}(\sigma_{\text{姓名 = 'Rose'}}(\text{图书} \Join \text{借阅} \Join \text{读者}))
+    \Pi_{\text{书名}, \text{借期}}(\sigma_{\text{姓名} = \text{'Rose'}}(\text{图书} \Join \text{借阅} \Join \text{读者}))
 \end{equation*}
+\end{Large}
+
 \subparagraph{(3)}
+\begin{Large}
 \begin{equation*}
     \Pi_{\text{姓名}}(\text{读者}) - \Pi_{\text{姓名}}(\text{读者} \Join \text{借阅})
 \end{equation*}
+\end{Large}
+
 \subparagraph{(4)}
+\begin{Large}
 \begin{equation*}
-    \Pi_{\text{书名, 单价}}(\sigma_{\text{作者 = 'Ullman'}}(\text{图书}))
+    \Pi_{\text{书名}, \text{单价}}(\sigma_{\text{作者} = \text{'Ullman'}}(\text{图书}))
 \end{equation*}
+\end{Large}
+
 \subparagraph{(5)}
+\begin{Large}
 \begin{equation*}
-    \Pi_{\text{姓名}}(\sigma_{\text{book\_count > 3}}(\Pi_{\text{姓名}, \textbf{count-distinct}(\text{图书号}) \rightarrow \text{book\_count}}(\text{读者} \Join \text{借阅})))
+    \Pi_{\text{姓名}}(\sigma_{\textit{book\_count} > 3}(\mathcal{G}_{\text{姓名}, \textbf{count-distinct}(\text{图书号}) \rightarrow \textit{book\_count}}(\text{读者} \Join \text{借阅})))
 \end{equation*}
+\end{Large}
+}
+
 
 \section{T1 教材的首页给出了一个供应商、零件、工程数据库：
 \protect\\ \indent 供应商：S (S\#, sname, status, city)
 \protect\\ \indent 零件：P (P\#, pname, color, weight, city)
-\protect\\ \indent 工程：J(J\#, jname, city)
+\protect\\ \indent 工程：J (J\#, jname, city)
 \protect\\ \indent 供应：SPJ (S\#, J\#, P\#, QTY) 表示供应商 S\#为工程 J\#供应了 QTY 数量的零件 P\#
 \protect\\ 请写出下列查询的关系代数表达式：}
 \subparagraph{(1)} 求每个供应商的供应商号以及该供应商供应的平均零件数量；
@@ -77,5 +96,42 @@
 \subparagraph{(3)} 求供应零件总量在 300 以上的供应商号和供应商名字；
 \subparagraph{(4)} 增加一个新的工程$\{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\}$到 J 中。并且，我们要求每个供应商按当前提供给其它工程的最大零件数将零提供给该新工程（比如：S1 为 J1 和 J2 提供零件P1，数量分别为 100 和 200，则要求 S1 按最大零件数 200 为 J00 提供零件 P1），请将相应信息插入到 SPJ 中；
 \subparagraph{(5)} 将供应商号为'S1'的供应商的 city 改为'合肥'；
+
+\paragraph{解}
+\subparagraph{(1)}
+\begin{Large}
+\begin{equation*}
+    \mathcal{G}_{\text{S\#}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}(\Pi_{\text{S\#}, \text{QTY}}(\text{S} \Join \text{SPJ}))
+\end{equation*}
+\end{Large}
+
+\subparagraph{(2)}
+\begin{Large}
+\begin{equation*}
+    \mathcal{G}_{\text{J\#}, \text{P\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
+\end{equation*}
+\end{Large}
+
+\subparagraph{(3)}
+\begin{Large}
+\begin{equation*}
+    \Pi_{\text{S\#}, \text{sname}}(\sigma_{\text{QTY} > 300}(\mathcal{G}_{\text{S\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})))
+\end{equation*}
+\end{Large}
+
+\subparagraph{(4)}
+\begin{Large}
+\begin{align*}
+    \text{J} & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\} \\
+    \text{SPJ} & \leftarrow \text{SPJ} \cup (\Pi_{\text{J\#}}(\sigma_{\text{J\#} = \text{'J00'}}(\text{J})) \times \mathcal{G}_{\text{S\#}, \text{P\#}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ}))
+\end{align*}
+\end{Large}
+
+\subparagraph{(5)}
+\begin{Large}
+\begin{equation*}
+    \text{S} \leftarrow (\text{S} - \sigma_{\text{S\#} = \text{'S1'}}(\text(S)) \cup (\Pi_{\text{S\#}, \text{sname}, \text{status}, \text{'合肥'}}(\sigma_{\text{S\#} = \text{'S1'}}(\text(S)))))
+\end{equation*}
+\end{Large}
 
 \end{document}

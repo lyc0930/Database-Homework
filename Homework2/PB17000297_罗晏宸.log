@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/W32TeX) (preloaded format=xelatex 2019.9.21)  11 MAR 2020 12:31
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/W32TeX) (preloaded format=xelatex 2019.9.21)  11 MAR 2020 17:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -606,21 +606,55 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <10.53937> not available
 (Font)              size <10.95> substituted on input line 27.
 
+
+LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <15.05624> not available
+(Font)              size <14.4> substituted on input line 32.
+
+
+Package fontspec Info: Could not resolve font "KaiTi/BI" (it probably doesn't
+(fontspec)             exist).
+
+
+Package fontspec Info: Could not resolve font "KaiTi/B" (it probably doesn't
+(fontspec)             exist).
+
+
+Package fontspec Info: Could not resolve font "KaiTi/I" (it probably doesn't
+(fontspec)             exist).
+
+
+Package fontspec Info: Font family 'KaiTi(0)' created for font 'KaiTi' with
+(fontspec)             options [Script={CJK}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"KaiTi/OT:script=hani;language=DFLT;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+
+
+LaTeX Font Warning: Font shape `TU/KaiTi(0)/bx/n' undefined
+(Font)              using `TU/KaiTi(0)/m/n' instead on input line 42.
+
 [1
 
-] [2] [3] (./PB17000297_罗晏宸.aux)
+] [2] [3] [4] (./PB17000297_罗晏宸.aux)
 
 LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 0.41063pt have occurred.
+(Font)              up to 0.65625pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 17159 strings out of 492909
- 397589 string characters out of 6130813
+ 17244 strings out of 492909
+ 400756 string characters out of 6130813
  455533 words of memory out of 5000000
- 21075 multiletter control sequences out of 15000+600000
- 565111 words of font info for 80 fonts, out of 8000000 for 9000
+ 21141 multiletter control sequences out of 15000+600000
+ 586475 words of font info for 103 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 54i,9n,68p,374b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 54i,11n,70p,374b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on PB17000297_罗晏宸.pdf (3 pages).
+Output written on PB17000297_罗晏宸.pdf (4 pages).

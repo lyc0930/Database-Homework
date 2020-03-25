@@ -6,6 +6,22 @@
 \usepackage{amsmath}
 \usepackage{geometry}
 \usepackage{ulem}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    basicstyle = \ttfamily,
+    keywordstyle = \bfseries \color{blue!70},
+    linewidth = \linewidth,
+    xleftmargin = .1\textwidth,
+    xrightmargin = .1\textwidth,
+    numbers = left,
+    numberstyle = \tiny,
+    commentstyle = \color{red!50!green!50!blue!50},
+    frame = shadowbox,
+    rulesepcolor = \color{red!20!green!20!blue!20},
+    breaklines = true,
+    breakatwhitespace = true,
+}
 
 \geometry{left = 2cm, right = 2cm}
 \makeatletter
@@ -22,14 +38,14 @@
 \maketitle
 
 \section{给定下面的基本表：
-\protect\\ \indent 学生表 \texttt{Student(\uline{sno}, sname, age)}
-\protect\\ \indent 课程表 \texttt{Course(\uline{cno}, cname, type, credit)}
-\protect\\ \indent 选课表 \texttt{SC(\uline{sno}, \uline{cno}, score, \uline{term})}
-\protect\\ 其中：
-\protect\\ \indent \texttt{type}是整型，\texttt{0}表示必修课，\texttt{1}表示选修课，\texttt{2}表示通识课，\texttt{3}表示公选课。
-\protect\\ \indent \texttt{credit}表示课程学分。
-\protect\\ \indent \texttt{term}表示第几学期，取值范围为\texttt{1-8}。
-\protect\\ 请用SQL语句回答下面的查询：}
+  \protect\\ \indent 学生表 \texttt{Student(\uline{sno}, sname, age)}
+  \protect\\ \indent 课程表 \texttt{Course(\uline{cno}, cname, type, credit)}
+  \protect\\ \indent 选课表 \texttt{SC(\uline{sno}, \uline{cno}, score, \uline{term})}
+  \protect\\ 其中：
+  \protect\\ \indent \texttt{type}是整型，\texttt{0}表示必修课，\texttt{1}表示选修课，\texttt{2}表示通识课，\texttt{3}表示公选课。
+  \protect\\ \indent \texttt{credit}表示课程学分。
+  \protect\\ \indent \texttt{term}表示第几学期，取值范围为\texttt{1-8}。
+  \protect\\ 请用SQL语句回答下面的查询：}
 \subparagraph{(1)} 查询选修了必修课但是缺少成绩的学生学号和姓名
 \subparagraph{(2)} 查询已选必修课总学分大于16并且所选通识课成绩都大于75分的学生姓名
 \subparagraph{(3)} 查询所有课程总成绩排名在前50\%（向上取整）的学生中必修课平均分最高的前10位同学，要求返回这些学生的学号、姓名、必修课平均分以及课程总成绩（不足10位时则全部返回）
@@ -37,40 +53,96 @@
 \subparagraph{(5)} \texttt{SC}表中重复的\texttt{sno}和\texttt{cno}意味着该学生重修了课程（在不同的学期里），现在我们希望删除学生重复选课的信息，只保留最近一个学期的选课记录以及成绩，请给出相应的SQL语句
 
 \paragraph{解}
-\subparagraph{(1)}
-\begin{Large}
-\begin{equation*}
-    \mathcal{G}_{\text{S\#}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}\big(\Pi_{\text{S\#}, \text{QTY}}(\text{S} \Join \text{SPJ})\big)
-\end{equation*}
-\end{Large}
+\subparagraph{(1)} 查询选修了必修课但是缺少成绩的学生学号和姓名
 
-\subparagraph{(2)}
-\begin{Large}
-\begin{equation*}
-    \mathcal{G}_{\text{J\#}, \text{P\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
-\end{equation*}
-\end{Large}
+\begin{lstlisting}[language = SQL]
+select sno, sname from Student
+where exists
+(
+    select * from SC natural join Course
+    where score is NULL and type = 0
+);
+\end{lstlisting}
 
-\subparagraph{(3)}
-\begin{Large}
-\begin{equation*}
-    \Pi_{\text{S\#}, \text{sname}}\Big(\sigma_{\text{QTY} > 300}\big(\mathcal{G}_{\text{S\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})\big)\Big)
-\end{equation*}
-\end{Large}
+\subparagraph{(2)} 查询已选必修课总学分大于16并且所选通识课成绩都大于75分的学生姓名
 
-\subparagraph{(4)}
-\begin{Large}
-\begin{align*}
-    \text{J} & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\} \\
-    \text{SPJ} & \leftarrow \text{SPJ} \cup \Big(\Pi_{\text{J\#}}\big(\sigma_{\text{J\#} = \text{'J00'}}(\text{J})\big) \times \mathcal{G}_{\text{S\#}, \text{P\#}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})\Big)
-\end{align*}
-\end{Large}
+\begin{lstlisting}[language = SQL]
+select sname from Student
+where sno in
+(
+    select sno from SC natural join Course
+    where type = 0
+    group by sno
+    having sum(credit) > 16
+) and not exists
+(
+    select sno from SC natural join Course
+    where type = 2 and score <= 75
+);
+\end{lstlisting}
 
-\subparagraph{(5)}
-\begin{Large}
-\begin{equation*}
-    \text{S} \leftarrow \bigg(\text{S} - \sigma_{\text{S\#} = \text{'S1'}}(\text{S}) \cup \Big(\Pi_{\text{S\#}, \text{sname}, \text{status}, \text{'合肥'}}\big(\sigma_{\text{S\#} = \text{'S1'}}(\text{S})\big)\Big)\bigg)
-\end{equation*}
-\end{Large}
+\subparagraph{(3)} 查询所有课程总成绩排名在前50\%（向上取整）的学生中必修课平均分最高的前10位同学，要求返回这些学生的学号、姓名、必修课平均分以及课程总成绩（不足10位时则全部返回）
+
+\begin{lstlisting}[language = SQL]
+with Total(sno, total_score) as
+(
+    select sno, sum(score) from SC natural join Course
+    group by sno
+)
+select sno, name, average_score, total_score from
+(
+    Student natural join
+    (
+        select sno, avg(score) as average_score from SC natural join Course
+        where type = 0
+        group by sno
+    )
+    natural join Total
+) as t1 where
+(
+    select count(*) from Total as t2
+    where t2.total_score > t1.total_score
+)
+< ceil((select count(*) from Student) / 2)
+order by average_score desc limit 10;
+\end{lstlisting}
+
+\subparagraph{(4)} 查询每门课程的课程名、课程类型、平均成绩和不及格率，要求结果按通识课、必修课、选修课、公选课顺序排列（提示：课程名可能有重名）
+
+\begin{lstlisting}[language = SQL]
+with Total(cno, total_number) as
+(
+    select cno, count(*) from SC
+    group by cno
+),
+Fail(cno, fail_number) as
+(
+    select cno, count(*) from SC
+    where score < 60
+    group by cno
+)
+select cname, type, average_grade, fail_rate from Course natural join
+(
+    select cno, avg(score) as average_grade from SC
+    group by sno
+) natural join
+(
+    select cno, (fail_number / (cast(total_number as float))) as fail_rate from Total natural join Fail
+)
+order by field(type, 2, 0, 1, 3);
+\end{lstlisting}
+
+
+\subparagraph{(5)} \texttt{SC}表中重复的\texttt{sno}和\texttt{cno}意味着该学生重修了课程（在不同的学期里），现在我们希望删除学生重复选课的信息，只保留最近一个学期的选课记录以及成绩，请给出相应的SQL语句
+
+\begin{lstlisting}[language = SQL]
+delete from SC as t1
+where t1.term <>
+(
+    select max(t2.term)
+    from SC as t2
+    where t1.sno = t2.sno and t1.cno = t2.cno
+);
+\end{lstlisting}
 
 \end{document}

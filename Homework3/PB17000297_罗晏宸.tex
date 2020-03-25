@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{ulem}
+
+\geometry{left = 2cm, right = 2cm}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}
+                                {-5ex plus -.5ex minus -.2ex}
+                                {3ex plus .2ex}
+                                {\normalfont\large\bfseries}}
+\makeatother
+\title{Homework 3}
+\author{PB17000297 罗晏宸}
+\date{March 25 2020}
+
+\begin{document}
+\maketitle
+
+\section{给定下面的基本表：
+\protect\\ \indent 学生表 \texttt{Student(\uline{sno}, sname, age)}
+\protect\\ \indent 课程表 \texttt{Course(\uline{cno}, cname, type, credit)}
+\protect\\ \indent 选课表 \texttt{SC(\uline{sno}, \uline{cno}, score, \uline{term})}
+\protect\\ 其中：
+\protect\\ \indent \texttt{type}是整型，\texttt{0}表示必修课，\texttt{1}表示选修课，\texttt{2}表示通识课，\texttt{3}表示公选课。
+\protect\\ \indent \texttt{credit}表示课程学分。
+\protect\\ \indent \texttt{term}表示第几学期，取值范围为\texttt{1-8}。
+\protect\\ 请用SQL语句回答下面的查询：}
+\subparagraph{(1)} 查询选修了必修课但是缺少成绩的学生学号和姓名
+\subparagraph{(2)} 查询已选必修课总学分大于16并且所选通识课成绩都大于75分的学生姓名
+\subparagraph{(3)} 查询所有课程总成绩排名在前50\%（向上取整）的学生中必修课平均分最高的前10位同学，要求返回这些学生的学号、姓名、必修课平均分以及课程总成绩（不足10位时则全部返回）
+\subparagraph{(4)} 查询每门课程的课程名、课程类型、平均成绩和不及格率，要求结果按通识课、必修课、选修课、公选课顺序排列（提示：课程名可能有重名）
+\subparagraph{(5)} \texttt{SC}表中重复的\texttt{sno}和\texttt{cno}意味着该学生重修了课程（在不同的学期里），现在我们希望删除学生重复选课的信息，只保留最近一个学期的选课记录以及成绩，请给出相应的SQL语句
+
+\paragraph{解}
+\subparagraph{(1)}
+\begin{Large}
+\begin{equation*}
+    \mathcal{G}_{\text{S\#}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}\big(\Pi_{\text{S\#}, \text{QTY}}(\text{S} \Join \text{SPJ})\big)
+\end{equation*}
+\end{Large}
+
+\subparagraph{(2)}
+\begin{Large}
+\begin{equation*}
+    \mathcal{G}_{\text{J\#}, \text{P\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
+\end{equation*}
+\end{Large}
+
+\subparagraph{(3)}
+\begin{Large}
+\begin{equation*}
+    \Pi_{\text{S\#}, \text{sname}}\Big(\sigma_{\text{QTY} > 300}\big(\mathcal{G}_{\text{S\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})\big)\Big)
+\end{equation*}
+\end{Large}
+
+\subparagraph{(4)}
+\begin{Large}
+\begin{align*}
+    \text{J} & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\} \\
+    \text{SPJ} & \leftarrow \text{SPJ} \cup \Big(\Pi_{\text{J\#}}\big(\sigma_{\text{J\#} = \text{'J00'}}(\text{J})\big) \times \mathcal{G}_{\text{S\#}, \text{P\#}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})\Big)
+\end{align*}
+\end{Large}
+
+\subparagraph{(5)}
+\begin{Large}
+\begin{equation*}
+    \text{S} \leftarrow \bigg(\text{S} - \sigma_{\text{S\#} = \text{'S1'}}(\text{S}) \cup \Big(\Pi_{\text{S\#}, \text{sname}, \text{status}, \text{'合肥'}}\big(\sigma_{\text{S\#} = \text{'S1'}}(\text{S})\big)\Big)\bigg)
+\end{equation*}
+\end{Large}
+
+\end{document}

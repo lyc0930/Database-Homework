@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{ulem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\setlist{
+    leftmargin = .1\linewidth,
+    % rightmargin = .1\linewidth,
+    % label=\emph{\alph*}.
+}
+\lstset{
+    basicstyle = \ttfamily,
+    keywordstyle = \bfseries \color{blue!70},
+    linewidth = \linewidth,
+    xleftmargin = .1\textwidth,
+    xrightmargin = .1\textwidth,
+    numbers = left,
+    numberstyle = \tiny,
+    commentstyle = \color{red!50!green!50!blue!50},
+    frame = shadowbox,
+    rulesepcolor = \color{red!20!green!20!blue!20},
+    breaklines = true,
+    breakatwhitespace = true,
+}
+
+\geometry{left = 2cm, right = 2cm}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}
+                                {-5ex plus -.5ex minus -.2ex}
+                                {3ex plus .2ex}
+                                {\normalfont\large\bfseries}}
+\makeatother
+\title{Homework 4}
+\author{PB17000297 罗晏宸}
+\date{April 8 2020}
+
+\begin{document}
+\maketitle
+
+\section{已知有关系模式 $R(A,\ B,\ C,\ D,\ E)$，$R$ 上的一个函数依赖集如下：$$F = \{ A \rightarrow BC,\ B \rightarrow CE,\ A \rightarrow B,\ AB \rightarrow C,\ AC \rightarrow DE,\ E \rightarrow A \}$$}
+\subparagraph{(1)} 求出 $F$ 的最小函数依赖集（要求写出求解过程）
+\subparagraph{(2)} 求 $R$ 的候选码，并给出证明
+
+\paragraph{解}
+\subparagraph{(1)}
+首先利用分解律
+\begin{equation*}
+    F = \{A \rightarrow B,\ A \rightarrow C,\ B \rightarrow C,\ B \rightarrow E,\ AB \rightarrow C,\ E \rightarrow A,\ AC \rightarrow D,\ AC \rightarrow E\}
+\end{equation*}
+再消去左部冗余属性
+\begin{align*}
+    A \rightarrow B,\ A \rightarrow AB,\ AB \rightarrow C & \Rightarrow A \rightarrow C \\
+    A \rightarrow C,\ A \rightarrow AC,\ AC \rightarrow D & \Rightarrow A \rightarrow D \\
+    A \rightarrow C,\ A \rightarrow AC,\ AC \rightarrow E & \Rightarrow A \rightarrow E
+\end{align*}
+\begin{equation*}
+    F = \{A \rightarrow B,\ A \rightarrow C,\ B \rightarrow C,\ B \rightarrow E,\ A \rightarrow D,\ A \rightarrow E,\ E \rightarrow A\}
+\end{equation*}
+最后消去冗余依赖
+\begin{align*}
+    A \rightarrow B,\ B \rightarrow C & \Rightarrow \bcancel{A \rightarrow C} \\
+    A \rightarrow B,\ B \rightarrow E & \Rightarrow \bcancel{A \rightarrow E}
+\end{align*}
+\begin{equation*}
+    F = \{A \rightarrow B,\ B \rightarrow C,\ B \rightarrow E,\ A \rightarrow D,\ E \rightarrow A\}
+\end{equation*}
+
+\subparagraph{(2)}
+$A$和$E$是候选码，证明如下
+\begin{proof}
+    \begin{align*}
+                                                          & A \rightarrow B             \\
+        A \rightarrow B,\ B \rightarrow C \Rightarrow     & A \rightarrow C             \\
+                                                          & A \rightarrow D             \\
+        A \rightarrow B,\ B \rightarrow E \Rightarrow     & A \rightarrow E             \\
+                                                          & A \rightarrow ABCDE \in F^+ \\
+                                                          &                             \\
+        E \rightarrow A,\ A \rightarrow ABCDE \Rightarrow & E \rightarrow ABCDE \in F^+
+    \end{align*}
+\end{proof}
+
+
+\section{现有关系模式: $R(A,\ B,\ C,\ D,\ E,\ F,\ G)$，$R$ 上的一个函数依赖集：$$F = \{AB \rightarrow E,\ A \rightarrow B,\ B \rightarrow C,\ C \rightarrow D \}$$}
+\subparagraph{(1)} 该关系模式满足第几范式？ 为什么？
+\subparagraph{(2)} 如果将关系模式 $R$ 分解为： $R_1(A,\ B,\ E)$ ，$R_2(B,\ C,\ D)$，$R_3(A,\ F,\ G)$，该数据库模式最高满足第几范式？
+\subparagraph{(3)} 请将关系模式 $R$ 无损连接并且保持函数依赖地分解到 3NF，要求给出具体步骤。
+\subparagraph{(4)} 请将关系模式 $R$ 无损连接地分解到 BCNF，要求给出步骤 。
+
+\paragraph{解}
+\subparagraph{(1)}
+满足第一范式，
+\begin{align*}
+                                                   & A \rightarrow B \\
+    A \rightarrow B,\ B \rightarrow C \Rightarrow  & A \rightarrow C \\
+    A \rightarrow C,\ C \rightarrow D \Rightarrow  & A \rightarrow D \\
+    A \rightarrow B,\ AB \rightarrow E \Rightarrow & A \rightarrow E
+\end{align*}
+主码为$A,\ F,\  G$，但有$A \rightarrow B$，因此$R$不是2NF的。
+
+\subparagraph{(2)}
+$R_1(A,\ B,\ E)$，$F_1 = \{AB \rightarrow E,\ A \rightarrow B\}$，主码为$A$，满足3NF；
+$R_2(B,\ C,\ D)$，$F_2 = \{B \rightarrow C,\ C \rightarrow D\}$，主码为$B$，满足2NF，但存在传递依赖，不满足3NF；
+$R_3(A,\ F,\ G)$，$F_3 = \varnothing$，主码为$A,\ F,\  G$，没有非主属性，属满足BCNF；
+因此该数据库模式最高满足第二范式。
+
+\subparagraph{(3)}
+\begin{enumerate}[label = \emph{\alph*}.]
+    \item $R$的最小函数依赖集$F = \{A \rightarrow B,\ B \rightarrow C,\ C \rightarrow D,\ A \rightarrow E\}$
+    \item $R'(F,\ G)$，$U = \{A,\ B,\ C,\ D,\ E\}$
+    \item $F_1 = \{A \rightarrow B,\ A \rightarrow E\}$，$F_2 = \{B \rightarrow C\}$，$F_3 = \{C \rightarrow D\}$
+    \item $q = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G)\}$
+    \item 主码为$A,\ F,\  G$
+    \item $p = q \cup R_5(A,\ F,\ G) = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G),\ R_5(A,\ F,\ G)\}$
+\end{enumerate}
+
+\subparagraph{(4)}
+\begin{enumerate}[label = \emph{\alph*}.]
+    \item $D = \{R\}$，$F = \{A \rightarrow B,\ B \rightarrow C,\ C \rightarrow D,\ A \rightarrow E\}$，候选码为$A,\ F,\  G$
+    \item $\{B \rightarrow C\}$不满足BCNF要求，$\{R_1(A,\ B,\ D,\ E,\ F,\ G),\ R_2(B,\ C)\}$
+    \item $R_1$主码为$A,\ F,\  G$
+    \item $\{B \rightarrow D\}$不满足BCNF要求，$\{R_1(A,\ B,\ E,\ F,\ G),\ R_2(B,\ D),\ R_3(B,\ C)\}$
+    \item 满足BCNF要求，结束
+\end{enumerate}
+\end{document}

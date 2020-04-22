@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks, linkcolor = black]{hyperref}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{tikz-er2}
+% \usetikzlibrary{er}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+
+\tikzstyle{every entity} = [top color=white, bottom color=blue!30,
+                            draw=blue!50!black!100, drop shadow]
+\tikzstyle{every weak entity} = [drop shadow={shadow xshift=.7ex,
+                                 shadow yshift=-.7ex}]
+\tikzstyle{every attribute} = [top color=white, bottom color=yellow!20,
+                               draw=yellow, node distance=1cm, drop shadow]
+\tikzstyle{every relationship} = [top color=white, bottom color=red!20,
+                                  draw=red!50!black!100, drop shadow]
+\tikzstyle{every isa} = [top color=white, bottom color=green!20,
+                         draw=green!50!black!100, drop shadow]
+
+\setlist{
+    leftmargin = .1\linewidth,
+    % rightmargin = .1\linewidth,
+    % label=\emph{\alph*}.
+}
+
+\geometry{left = 2cm, right = 2cm}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}
+                                {-5ex plus -.5ex minus -.2ex}
+                                {3ex plus .2ex}
+                                {\normalfont\large\bfseries}}
+\makeatother
+\title{HomeworkIn 5}
+\author{PB17000297 罗晏宸}
+\date{April 22 2020}
+
+\begin{document}
+\maketitle
+
+\section{假设某公司要开发一个信息管理系统。根据调研，获得该公司的业务规则如下（所有实体的码可以按日常生活中的一般规则处理）：}
+\begin{enumerate}[label = (\arabic{*})]
+    \item 公司下设几个部门，如技术部、财务部、市场部等；
+    \item 每个部门承担多个工程项目，每个工程项目属于一个部门。每个部门为其承担的每个项目分别开设独立的银行账户；
+    \item 每个部门有多名职工，每一名职工只能属于一个部门；
+    \item 一个职工可能参与多个工程项目，且每个工程项目有多名职工参与施工。根据职工在工程项目中完成的情况发放酬金；
+    \item 工程项目有工程号、工程名两个属性；部门有部门号、部门名称两个属性；职工有职工号、姓名、性别属性。
+\end{enumerate}
+根据以上描述，请画出相应的 ER 模型（使用传统的 ER 建模符号），并将它转换为关系数据库模式。注：关系模式和属性名称均使用中文名称。
+
+\paragraph{解}
+ER 模型如图\ref{ER}所示，
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance = 1.5cm, every edge/.style={link}]
+        \node[entity] (Department) {部门};
+        \node[attribute] (DepartmentName) [above left = of Department] {部门名称} edge (Department);
+        \node[attribute] (DepartmentNo) [left = of Department] {\key{部门号}} edge (Department);
+
+        \node[relationship] (UnderTake) [right = of Department] {承办};
+        \node[attribute] (Account) [above = of UnderTake] {银行账户} edge (UnderTake);
+
+        \node[entity] (Project) [right = of UnderTake] {工程};
+        \node[attribute] (ProjectName) [above right = of Project] {工程名} edge (Project);
+        \node[attribute] (ProjectNo) [right = of Project] {\key{工程号}} edge (Project);
+
+        \node[relationship] (WorkIn) [below = of Department] {就职};
+
+        \node[entity] (Staff) [below = of WorkIn] {职工};
+        \node[attribute] (StaffName) [below left = of Staff] {姓名} edge (Staff);
+        \node[attribute] (StaffNo) [below = of Staff] {\key{职工号}} edge (Staff);
+        \node[attribute] (StaffGender) [below right = of Staff] {性别} edge (Staff);
+
+        \node[relationship] (Participate) [below = 4.0cm of Project] {参与施工};
+        \node[attribute] (Remuneration) [below right = of Participate] {酬金} edge (Participate);
+
+        \draw[link] (Department.-90) |- node [pos = 0.1, auto] {1} (WorkIn.90);
+        \draw[link] (Staff.90) |- node [pos = 0.1, auto, swap] {N} (WorkIn.-90);
+
+        \draw[link] (Department.0) |- node [pos = 0.6, auto] {1} (UnderTake.180);
+        \draw[link] (Project.180) |- node [pos = 0.6, auto, swap] {N} (UnderTake.0);
+
+        \draw[link] (Staff.0) |- node [pos = 0.6, auto] {N} (Participate.180);
+        \draw[link] (Project.-90) |- node [pos = 0.1, auto, swap] {M} (Participate.90);
+    \end{tikzpicture}
+    \caption{信息管理系统 ER 模型}
+    \label{ER}
+\end{figure}
+转换为关系数据库模式为
+\begin{itemize}
+    \item 部门(\uline{部门号}, 名称)
+    \item 职工(\uline{职工号}, 姓名, 性别, 部门号)
+    \item 工程项目(\uline{工程号}, 工程名, 部门号, 银行账户)
+    \item 参与施工(\uline{职工号}, \uline{工程号}, 酬金)
+\end{itemize}
+\end{document}

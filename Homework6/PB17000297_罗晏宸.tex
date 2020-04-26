@@ -13,9 +13,30 @@
 \usepackage{enumitem}
 \usepackage{amssymb}
 \usepackage{tikz}
-% \usetikzlibrary{er}
+\usetikzlibrary{calc}
 \usetikzlibrary{positioning}
-\usetikzlibrary{shadows}
+\usetikzlibrary{arrows}
+
+\newcounter{BPTnodes}
+\newcommand{\BPnode}[4]{
+    \stepcounter{BPTnodes}
+    \node[rectangle, draw, black, minimum width = 1.6em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes D1) at (#1) {#2};
+    \node[rectangle, draw, black, minimum width = 1.6em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes D2) [right = 0em of \theBPTnodes D1]{#3};
+    \node[rectangle, draw, black, minimum width = 1.6em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes D3) [right = 0em of \theBPTnodes D2]{#4};
+    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P1) [below left = 0em and -1.2em of \theBPTnodes D1] {};
+    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P2) [right = 0em of \theBPTnodes P1] {};
+    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P3) [right = 0em of \theBPTnodes P2] {};
+    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P4) [right = 0em of \theBPTnodes P3] {};
+    % \coordinate (\theBPTnodes head) at ($(\theBPTnodes D1) - (1.4em, 1.4em)$);
+    % \coordinate (\theBPTnodes tail) at ($(\theBPTnodes P4) + (1.05em, 1.4em)$);
+    % \draw [draw = black] (\theBPTnodes head) rectangle (\theBPTnodes tail);
+    % \coordinate (\theBPTnodes) at ($(\theBPTnodes D2) + (0, 0.7em)$);
+    \coordinate ({\theBPTnodes}Point1) at ($(\theBPTnodes P1)$);
+    \coordinate ({\theBPTnodes}Point2) at ($(\theBPTnodes P2)$);
+    \coordinate ({\theBPTnodes}Point3) at ($(\theBPTnodes P3)$);
+    \coordinate ({\theBPTnodes}Point4) at ($(\theBPTnodes P4)$);
+
+}
 
 \setlist{
     leftmargin = .1\linewidth,
@@ -32,64 +53,68 @@
 \makeatother
 \title{Homework 6}
 \author{PB17000297 罗晏宸}
-\date{April 22 2020}
+\date{April 26 2020}
 
 \begin{document}
 \maketitle
 
-\section{假设某公司要开发一个信息管理系统。根据调研，获得该公司的业务规则如下（所有实体的码可以按日常生活中的一般规则处理）：}
-\begin{enumerate}[label = (\arabic{*})]
-    \item 公司下设几个部门，如技术部、财务部、市场部等；
-    \item 每个部门承担多个工程项目，每个工程项目属于一个部门。每个部门为其承担的每个项目分别开设独立的银行账户；
-    \item 每个部门有多名职工，每一名职工只能属于一个部门；
-    \item 一个职工可能参与多个工程项目，且每个工程项目有多名职工参与施工。根据职工在工程项目中完成的情况发放酬金；
-    \item 工程项目有工程号、工程名两个属性；部门有部门号、部门名称两个属性；职工有职工号、姓名、性别属性。
-\end{enumerate}
-根据以上描述，请画出相应的 ER 模型（使用传统的 ER 建模符号），并将它转换为关系数据库模式。注：关系模式和属性名称均使用中文名称。
-
-\paragraph{解}
-ER 模型如图\ref{ER}所示，
+\section{考虑下面的 B+ 树（n = 3）：}
 \begin{figure}[h]
     \centering
-    \begin{tikzpicture}[node distance = 1.5cm, every edge/.style={link}]
-        \node[entity] (Department) {部门};
-        \node[attribute] (DepartmentName) [above left = of Department] {部门名称} edge (Department);
-        \node[attribute] (DepartmentNo) [left = of Department] {\key{部门号}} edge (Department);
-
-        \node[relationship] (UnderTake) [right = of Department] {承办};
-        \node[attribute] (Account) [above = of UnderTake] {银行账户} edge (UnderTake);
-
-        \node[entity] (Project) [right = of UnderTake] {工程};
-        \node[attribute] (ProjectName) [above right = of Project] {工程名} edge (Project);
-        \node[attribute] (ProjectNo) [right = of Project] {\key{工程号}} edge (Project);
-
-        \node[relationship] (WorkIn) [below = of Department] {就职};
-
-        \node[entity] (Staff) [below = of WorkIn] {职工};
-        \node[attribute] (StaffName) [below left = of Staff] {姓名} edge (Staff);
-        \node[attribute] (StaffNo) [below = of Staff] {\key{职工号}} edge (Staff);
-        \node[attribute] (StaffGender) [below right = of Staff] {性别} edge (Staff);
-
-        \node[relationship] (Participate) [below = 4.0cm of Project] {参与施工};
-        \node[attribute] (Remuneration) [below right = of Participate] {酬金} edge (Participate);
-
-        \draw[link] (Department.-90) |- node [pos = 0.1, auto] {1} (WorkIn.90);
-        \draw[link] (Staff.90) |- node [pos = 0.1, auto, swap] {N} (WorkIn.-90);
-
-        \draw[link] (Department.0) |- node [pos = 0.6, auto] {1} (UnderTake.180);
-        \draw[link] (Project.180) |- node [pos = 0.6, auto, swap] {N} (UnderTake.0);
-
-        \draw[link] (Staff.0) |- node [pos = 0.6, auto] {N} (Participate.180);
-        \draw[link] (Project.-90) |- node [pos = 0.1, auto, swap] {M} (Participate.90);
+    \begin{tikzpicture}[arrows = {-triangle 45}]
+        \BPnode{0, 0}{13}{}{}
+        \BPnode{-6em, -6em}{7}{}{}
+        \BPnode{6em, -6em}{23}{31}{43}
+        \BPnode{-15em, -12em}{2}{3}{5}
+        \BPnode{-9em, -12em}{7}{11}{}
+        \BPnode{-3em, -12em}{13}{17}{19}
+        \BPnode{3em, -12em}{23}{29}{}
+        \BPnode{9em, -12em}{31}{37}{41}
+        \BPnode{15em, -12em}{43}{47}{}
+        \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
+        \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
+        \draw[] ({2}Point1) to[out = -90, in = 90] (4D2);
+        \draw[] ({2}Point2) to[out = -90, in = 90] (5D2);
+        \draw[] ({3}Point1) to[out = -90, in = 90] (6D2);
+        \draw[] ({3}Point2) to[out = -90, in = 90] (7D2);
+        \draw[] ({3}Point3) to[out = -90, in = 90] (8D2);
+        \draw[] ({3}Point4) to[out = -90, in = 90] (9D2);
+        \draw[] ({4}Point1) to ($({4}Point1) - (0, 2.0em)$);
+        \draw[] ({4}Point2) to ($({4}Point2) - (0, 2.0em)$);
+        \draw[] ({4}Point3) to ($({4}Point3) - (0, 2.0em)$);
+        \draw[] ({4}Point4) to (5P1);
+        \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
+        \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
+        \draw[] ({5}Point4) to (6P1);
+        \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
+        \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
+        \draw[] ({6}Point3) to ($({6}Point3) - (0, 2.0em)$);
+        \draw[] ({6}Point4) to (7P1);
+        \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
+        \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
+        \draw[] ({7}Point4) to (8P1);
+        \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
+        \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
+        \draw[] ({8}Point3) to ($({8}Point3) - (0, 2.0em)$);
+        \draw[] ({8}Point4) to (9P1);
+        \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
+        \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
     \end{tikzpicture}
-    \caption{信息管理系统 ER 模型}
-    \label{ER}
+    \label{B+}
 \end{figure}
-转换为关系数据库模式为
-\begin{itemize}
-    \item 部门(\uline{部门号}, 名称)
-    \item 职工(\uline{职工号}, 姓名, 性别, 部门号)
-    \item 工程项目(\uline{工程号}, 工程名, 部门号, 银行账户)
-    \item 参与施工(\uline{职工号}, \uline{工程号}, 酬金)
-\end{itemize}
+\subparagraph{1)} 画出依次插入了 36, 18, 40 后的 B+ 树；
+\subparagraph{2)} 画出在 1) 所得的 B+ 树中依次删除 43, 13, 7 之后最终的 B+ 树
+
+\paragraph{解}
+
+\section{假设有如下的键值，现用 5 位二进制序列来表示每个键值的 hash 值。回答问题：}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ccccccc}
+        A [11001] & B [00111] & C [00101] & D [00110] & E [10100] & F [01000] & G [00011] \\
+        H [11110] & I [10001] & J [01101] & K [10101] & L [11100] & M [01100] & N [11111]
+    \end{tabular}
+\end{table}
+\subparagraph{1)} 如果将上述键值按 A 到 N 的顺序插入到可扩展散列索引中，若每个桶大小为一个磁盘块，每个磁盘块最多可容纳 3 个键值，且初始时散列索引为空，则全部键值插入完成后该散列索引中共有几个桶？并请写出键值 E 所在的桶中的全部键值。
+\subparagraph{2)} 前一问题中，如果换成线性散列索引，其余假设不变，同时假设只有当插入新键值后空间利用率大于 80\%时才增加新的桶，则全部键值按序插入完成后该散列索引中共有几个桶？并请写出键值 B 所在的桶中的全部键值（包括溢出块中的键值）。
 \end{document}

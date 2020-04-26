@@ -62,6 +62,7 @@
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}[arrows = {-triangle 45}]
+        \setcounter{BPTnodes}{0}
         \BPnode{0, 0}{13}{}{}
         \BPnode{-6em, -6em}{7}{}{}
         \BPnode{6em, -6em}{23}{31}{43}
@@ -106,7 +107,166 @@
 \subparagraph{2)} 画出在 1) 所得的 B+ 树中依次删除 43, 13, 7 之后最终的 B+ 树
 
 \paragraph{解}
-
+\subparagraph{1)}
+\begin{figure}[h]
+    \centering
+    \setcounter{BPTnodes}{0}
+    \begin{tikzpicture}[arrows = {-triangle 45}]
+        \BPnode{0, 0}{13}{{\color{blue}37}}{}
+        \BPnode{-12em,  -6em}{7}{}{}
+        \BPnode{0em,    -6em}{{\color{blue}23}}{{\color{blue}31}}{}
+        \BPnode{12em,   -6em}{{\color{blue}43}}{}{}
+        \BPnode{-18em, -12em}{2}{3}{5}
+        \BPnode{-12em, -12em}{7}{11}{}
+        \BPnode{-6em,  -12em}{13}{17}{19}
+        \BPnode{0em,   -12em}{23}{29}{}
+        \BPnode{6em,   -12em}{{\color{blue}31}}{{\color{red}36}}{}
+        \BPnode{12em,  -12em}{{\color{blue}37}}{{\color{blue}41}}{}
+        \BPnode{18em,  -12em}{43}{47}{}
+        \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
+        \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
+        \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
+        \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
+        \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
+        \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
+        \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
+        \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
+        \draw[] ({4}Point1) to[out = -90, in = 90] (10D2);
+        \draw[] ({4}Point2) to[out = -90, in = 90] (11D2);
+        \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
+        \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
+        \draw[] ({5}Point4) to (6P1);
+        \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
+        \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
+        \draw[] ({6}Point4) to (7P1);
+        \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
+        \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
+        \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
+        \draw[] ({7}Point4) to (8P1);
+        \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
+        \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
+        \draw[] ({8}Point4) to (9P1);
+        \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
+        \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
+        \draw[] ({9}Point4) to (10P1);
+        \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
+        \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
+        \draw[] ({10}Point4) to (11P1);
+        \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
+        \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
+    \end{tikzpicture}
+    \label{B+36}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \setcounter{BPTnodes}{0}
+    \begin{tikzpicture}[arrows = {-triangle 45}]
+        \BPnode{0, 0}{13}{37}{}
+        \BPnode{-12em,  -6em}{7}{}{}
+        \BPnode{0em,    -6em}{{\color{red}18}}{23}{31}
+        \BPnode{12em,   -6em}{43}{}{}
+        \BPnode{-21em, -12em}{2}{3}{5}
+        \BPnode{-15em, -12em}{7}{11}{}
+        \BPnode{-9em,  -12em}{{\color{blue}13}}{{\color{blue}17}}{}
+        \BPnode{-3em,  -12em}{{\color{red}18}}{{\color{blue}19}}{}
+        \BPnode{3em,   -12em}{23}{29}{}
+        \BPnode{9em,   -12em}{31}{36}{}
+        \BPnode{15em,  -12em}{37}{41}{}
+        \BPnode{21em,  -12em}{43}{47}{}
+        \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
+        \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
+        \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
+        \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
+        \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
+        \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
+        \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
+        \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
+        \draw[] ({3}Point4) to[out = -90, in = 90] (10D2);
+        \draw[] ({4}Point1) to[out = -90, in = 90] (11D2);
+        \draw[] ({4}Point2) to[out = -90, in = 90] (12D2);
+        \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
+        \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
+        \draw[] ({5}Point4) to (6P1);
+        \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
+        \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
+        \draw[] ({6}Point4) to (7P1);
+        \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
+        \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
+        \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
+        \draw[] ({7}Point4) to (8P1);
+        \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
+        \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
+        \draw[] ({8}Point4) to (9P1);
+        \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
+        \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
+        \draw[] ({9}Point4) to (10P1);
+        \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
+        \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
+        \draw[] ({10}Point4) to (11P1);
+        \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
+        \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
+        \draw[] ({11}Point4) to (12P1);
+        \draw[] ({12}Point1) to ($({12}Point1) - (0, 2.0em)$);
+        \draw[] ({12}Point2) to ($({12}Point2) - (0, 2.0em)$);
+    \end{tikzpicture}
+    \label{B+18}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \setcounter{BPTnodes}{0}
+    \begin{tikzpicture}[arrows = {-triangle 45}]
+        \BPnode{0, 0}{13}{37}{}
+        \BPnode{-12em,  -6em}{7}{}{}
+        \BPnode{0em,    -6em}{18}{23}{31}
+        \BPnode{12em,   -6em}{43}{}{}
+        \BPnode{-21em, -12em}{2}{3}{5}
+        \BPnode{-15em, -12em}{7}{11}{}
+        \BPnode{-9em,  -12em}{13}{17}{}
+        \BPnode{-3em,  -12em}{18}{19}{}
+        \BPnode{3em,   -12em}{23}{29}{}
+        \BPnode{9em,   -12em}{31}{36}{}
+        \BPnode{15em,  -12em}{37}{{\color{red}40}}{41}
+        \BPnode{21em,  -12em}{43}{47}{}
+        \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
+        \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
+        \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
+        \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
+        \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
+        \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
+        \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
+        \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
+        \draw[] ({3}Point4) to[out = -90, in = 90] (10D2);
+        \draw[] ({4}Point1) to[out = -90, in = 90] (11D2);
+        \draw[] ({4}Point2) to[out = -90, in = 90] (12D2);
+        \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
+        \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
+        \draw[] ({5}Point4) to (6P1);
+        \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
+        \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
+        \draw[] ({6}Point4) to (7P1);
+        \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
+        \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
+        \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
+        \draw[] ({7}Point4) to (8P1);
+        \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
+        \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
+        \draw[] ({8}Point4) to (9P1);
+        \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
+        \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
+        \draw[] ({9}Point4) to (10P1);
+        \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
+        \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
+        \draw[] ({10}Point4) to (11P1);
+        \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
+        \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
+        \draw[] ({11}Point3) to ($({11}Point3) - (0, 2.0em)$);
+        \draw[] ({11}Point4) to (12P1);
+        \draw[] ({12}Point1) to ($({12}Point1) - (0, 2.0em)$);
+        \draw[] ({12}Point2) to ($({12}Point2) - (0, 2.0em)$);
+    \end{tikzpicture}
+    \label{B+40}
+\end{figure}
+\subparagraph{2)}
 \section{假设有如下的键值，现用 5 位二进制序列来表示每个键值的 hash 值。回答问题：}
 \begin{table}[h]
     \centering

@@ -11,38 +11,8 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{subcaption}
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\usetikzlibrary{positioning}
-\usetikzlibrary{arrows}
+\usepackage{tikz-B+Tree}
 
-\newcounter{BPTnodes}
-\newcommand{\BPnode}[4]{
-    \stepcounter{BPTnodes}
-    \node[rectangle, draw, black, minimum width = 1.6em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes D1) at (#1) {#2};
-    \node[rectangle, draw, black, minimum width = 1.6em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes D2) [right = 0em of \theBPTnodes D1]{#3};
-    \node[rectangle, draw, black, minimum width = 1.6em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes D3) [right = 0em of \theBPTnodes D2]{#4};
-    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P1) [below left = 0em and -1.2em of \theBPTnodes D1] {};
-    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P2) [right = 0em of \theBPTnodes P1] {};
-    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P3) [right = 0em of \theBPTnodes P2] {};
-    \node[rectangle, draw, black, minimum width = 1.2em, minimum height = 1.6em, inner sep = 2pt] (\theBPTnodes P4) [right = 0em of \theBPTnodes P3] {};
-    % \coordinate (\theBPTnodes head) at ($(\theBPTnodes D1) - (1.4em, 1.4em)$);
-    % \coordinate (\theBPTnodes tail) at ($(\theBPTnodes P4) + (1.05em, 1.4em)$);
-    % \draw [draw = black] (\theBPTnodes head) rectangle (\theBPTnodes tail);
-    % \coordinate (\theBPTnodes) at ($(\theBPTnodes D2) + (0, 0.7em)$);
-    \coordinate ({\theBPTnodes}Point1) at ($(\theBPTnodes P1)$);
-    \coordinate ({\theBPTnodes}Point2) at ($(\theBPTnodes P2)$);
-    \coordinate ({\theBPTnodes}Point3) at ($(\theBPTnodes P3)$);
-    \coordinate ({\theBPTnodes}Point4) at ($(\theBPTnodes P4)$);
-
-}
-\geometry{left = 2cm, right = 2cm}
-\makeatletter
-\renewcommand{\section}{\@startsection{section}{1}{0mm}
-                                {-5ex plus -.5ex minus -.2ex}
-                                {3ex plus .2ex}
-                                {\normalfont\large\bfseries}}
-\makeatother
 \title{Homework 6}
 \author{PB17000297 罗晏宸}
 \date{April 26 2020}
@@ -53,45 +23,36 @@
 \section{考虑下面的 B+ 树（n = 3）：}
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}[arrows = {-triangle 45}]
-        \setcounter{BPTnodes}{0}
-        \BPnode{0, 0}{13}{}{}
-        \BPnode{-6em, -6em}{7}{}{}
-        \BPnode{6em, -6em}{23}{31}{43}
-        \BPnode{-15em, -12em}{2}{3}{5}
-        \BPnode{-9em, -12em}{7}{11}{}
-        \BPnode{-3em, -12em}{13}{17}{19}
-        \BPnode{3em, -12em}{23}{29}{}
-        \BPnode{9em, -12em}{31}{37}{41}
-        \BPnode{15em, -12em}{43}{47}{}
-        \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-        \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-        \draw[] ({2}Point1) to[out = -90, in = 90] (4D2);
-        \draw[] ({2}Point2) to[out = -90, in = 90] (5D2);
-        \draw[] ({3}Point1) to[out = -90, in = 90] (6D2);
-        \draw[] ({3}Point2) to[out = -90, in = 90] (7D2);
-        \draw[] ({3}Point3) to[out = -90, in = 90] (8D2);
-        \draw[] ({3}Point4) to[out = -90, in = 90] (9D2);
-        \draw[] ({4}Point1) to ($({4}Point1) - (0, 2.0em)$);
-        \draw[] ({4}Point2) to ($({4}Point2) - (0, 2.0em)$);
-        \draw[] ({4}Point3) to ($({4}Point3) - (0, 2.0em)$);
-        \draw[] ({4}Point4) to (5P1);
-        \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-        \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-        \draw[] ({5}Point4) to (6P1);
-        \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-        \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-        \draw[] ({6}Point3) to ($({6}Point3) - (0, 2.0em)$);
-        \draw[] ({6}Point4) to (7P1);
-        \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-        \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-        \draw[] ({7}Point4) to (8P1);
-        \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-        \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-        \draw[] ({8}Point3) to ($({8}Point3) - (0, 2.0em)$);
-        \draw[] ({8}Point4) to (9P1);
-        \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-        \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
+    \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+        \node at(    0,     0) (A1) {\B+(13|  |  )};
+        \node at( -6em,  -6em) (B1) {\B+( 7|  |  )};
+        \node at(  6em,  -6em) (B2) {\B+(23|31|43)};
+        \node at(-15em, -12em) (C1) {\B+( 2| 3| 5)};
+        \node at( -9em, -12em) (C2) {\B+( 7|11|  )};
+        \node at( -3em, -12em) (C3) {\B+(13|17|19)};
+        \node at(  3em, -12em) (C4) {\B+(23|29|  )};
+        \node at(  9em, -12em) (C5) {\B+(31|37|41)};
+        \node at( 15em, -12em) (C6) {\B+(43|47|  )};
+        \foreach \i in {1, 2}
+            {
+                \draw (A1.ptr\i) to (B\i);
+            }
+        \foreach \i in {1, 2}
+            {
+                \draw (B1.ptr\i) to (C\i);
+            }
+        \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 4}
+            {
+                \draw (B2.ptr\i) to (C\j);
+            }
+        \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 3/3, 4/1, 4/2, 5/1, 5/2, 5/3, 6/1, 6/2}
+            {
+                \draw (C\i.ptr\j) -- +(0, -1);
+            }
+        \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 5}
+            {
+                \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+            }
     \end{tikzpicture}
     \label{B+}
 \end{figure}
@@ -107,51 +68,44 @@
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \setcounter{BPTnodes}{0}
         \scalebox{0.80}{
-            \begin{tikzpicture}[arrows = {-triangle 45}]
-                \BPnode{0, 0}{13}{{\color{blue}37}}{}
-                \BPnode{-12em,  -6em}{7}{}{}
-                \BPnode{0em,    -6em}{{\color{blue}23}}{{\color{blue}31}}{}
-                \BPnode{12em,   -6em}{{\color{blue}43}}{}{}
-                \BPnode{-18em, -12em}{2}{3}{5}
-                \BPnode{-12em, -12em}{7}{11}{}
-                \BPnode{-6em,  -12em}{13}{17}{19}
-                \BPnode{0em,   -12em}{23}{29}{}
-                \BPnode{6em,   -12em}{{\color{blue}31}}{{\color{red}36}}{}
-                \BPnode{12em,  -12em}{{\color{blue}37}}{{\color{blue}41}}{}
-                \BPnode{18em,  -12em}{43}{47}{}
-                \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-                \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-                \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
-                \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
-                \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
-                \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
-                \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
-                \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
-                \draw[] ({4}Point1) to[out = -90, in = 90] (10D2);
-                \draw[] ({4}Point2) to[out = -90, in = 90] (11D2);
-                \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-                \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-                \draw[] ({5}Point4) to (6P1);
-                \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-                \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-                \draw[] ({6}Point4) to (7P1);
-                \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-                \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-                \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
-                \draw[] ({7}Point4) to (8P1);
-                \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-                \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-                \draw[] ({8}Point4) to (9P1);
-                \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-                \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
-                \draw[blue] ({9}Point4) to (10P1);
-                \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
-                \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
-                \draw[] ({10}Point4) to (11P1);
-                \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
-                \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
+            \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+                \node at(  0  ,   0  ) (A1) {\B+(13|{\color{blue}37}|)};
+                \node at(-12em,  -6em) (B1) {\B+(7||)};
+                \node at(  0em,  -6em) (B2) {\B+({\color{blue}23}|{\color{blue}31}|)};
+                \node at( 12em,  -6em) (B3) {\B+({\color{blue}43}||)};
+                \node at(-18em, -12em) (C1) {\B+(2|3|5)};
+                \node at(-12em, -12em) (C2) {\B+(7|11|)};
+                \node at( -6em, -12em) (C3) {\B+(13|17|19)};
+                \node at(  0em, -12em) (C4) {\B+(23|29|)};
+                \node at(  6em, -12em) (C5) {\B+({\color{blue}31}|{\color{red}36}|)};
+                \node at( 12em, -12em) (C6) {\B+({\color{blue}37}|{\color{blue}41}|)};
+                \node at( 18em, -12em) (C7) {\B+(43|47|)};
+                \foreach \i in {1, 2, 3}
+                    {
+                        \draw (A1.ptr\i) to (B\i);
+                    }
+                \foreach \i in {1, 2}
+                    {
+                        \draw (B1.ptr\i) to (C\i);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 3}
+                    {
+                        \draw (B2.ptr\i) to (C\j);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+5)] in {1, 2}
+                    {
+                        \draw (B3.ptr\i) to (C\j);
+                    }
+                \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 3/3, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2}
+                    {
+                        \draw (C\i.ptr\j) -- +(0, -1);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+                    {
+                        \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+                    }
+                \draw [blue] (C5.ptr4) to[out = 0, in = 180] (C6.proc);
             \end{tikzpicture}
         }
         \caption{插入了 36 后的 B+ 树}
@@ -160,56 +114,45 @@
     \\[2em]
     \begin{subfigure}{\textwidth}
         \centering
-        \setcounter{BPTnodes}{0}
         \scalebox{0.80}{
-            \begin{tikzpicture}[arrows = {-triangle 45}]
-                \BPnode{0, 0}{13}{37}{}
-                \BPnode{-12em,  -6em}{7}{}{}
-                \BPnode{0em,    -6em}{{\color{red}18}}{23}{31}
-                \BPnode{12em,   -6em}{43}{}{}
-                \BPnode{-21em, -12em}{2}{3}{5}
-                \BPnode{-15em, -12em}{7}{11}{}
-                \BPnode{-9em,  -12em}{{\color{blue}13}}{{\color{blue}17}}{}
-                \BPnode{-3em,  -12em}{{\color{red}18}}{{\color{blue}19}}{}
-                \BPnode{3em,   -12em}{23}{29}{}
-                \BPnode{9em,   -12em}{31}{36}{}
-                \BPnode{15em,  -12em}{37}{41}{}
-                \BPnode{21em,  -12em}{43}{47}{}
-                \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-                \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-                \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
-                \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
-                \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
-                \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
-                \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
-                \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
-                \draw[] ({3}Point4) to[out = -90, in = 90] (10D2);
-                \draw[] ({4}Point1) to[out = -90, in = 90] (11D2);
-                \draw[] ({4}Point2) to[out = -90, in = 90] (12D2);
-                \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-                \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-                \draw[] ({5}Point4) to (6P1);
-                \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-                \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-                \draw[] ({6}Point4) to (7P1);
-                \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-                \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-                \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
-                \draw[blue] ({7}Point4) to (8P1);
-                \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-                \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-                \draw[] ({8}Point4) to (9P1);
-                \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-                \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
-                \draw[] ({9}Point4) to (10P1);
-                \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
-                \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
-                \draw[] ({10}Point4) to (11P1);
-                \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
-                \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
-                \draw[] ({11}Point4) to (12P1);
-                \draw[] ({12}Point1) to ($({12}Point1) - (0, 2.0em)$);
-                \draw[] ({12}Point2) to ($({12}Point2) - (0, 2.0em)$);
+            \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+                \node at(  0  ,   0  ) (A1) {\B+(13|37|)};
+                \node at(-12em,  -6em) (B1) {\B+(7||)};
+                \node at(  0em,  -6em) (B2) {\B+({\color{red}18}|23|31)};
+                \node at( 12em,  -6em) (B3) {\B+(43||)};
+                \node at(-21em, -12em) (C1) {\B+(2|3|5)};
+                \node at(-15em, -12em) (C2) {\B+(7|11|)};
+                \node at( -9em, -12em) (C3) {\B+({\color{blue}13}|{\color{blue}17}|)};
+                \node at( -3em, -12em) (C4) {\B+({\color{red}18}|{\color{blue}19}|)};
+                \node at(  3em, -12em) (C5) {\B+(23|29|)};
+                \node at(  9em, -12em) (C6) {\B+(31|36|)};
+                \node at( 15em, -12em) (C7) {\B+(37|41|)};
+                \node at( 21em, -12em) (C8) {\B+(43|47|)};
+                \foreach \i in {1, 2, 3}
+                    {
+                        \draw (A1.ptr\i) to (B\i);
+                    }
+                \foreach \i in {1, 2}
+                    {
+                        \draw (B1.ptr\i) to (C\i);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 4}
+                    {
+                        \draw (B2.ptr\i) to (C\j);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+6)] in {1, 2}
+                    {
+                        \draw (B3.ptr\i) to (C\j);
+                    }
+                \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2, 8/1, 8/2}
+                    {
+                        \draw (C\i.ptr\j) -- +(0, -1);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+                    {
+                        \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+                    }
+                \draw [blue] (C3.ptr4) to[out = 0, in = 180] (C4.proc);
             \end{tikzpicture}
         }
         \caption{插入了 36, 18 后的 B+ 树}
@@ -218,57 +161,44 @@
     \\[2em]
     \begin{subfigure}{\textwidth}
         \centering
-        \setcounter{BPTnodes}{0}
         \scalebox{0.80}{
-            \begin{tikzpicture}[arrows = {-triangle 45}]
-                \BPnode{0, 0}{13}{37}{}
-                \BPnode{-12em,  -6em}{7}{}{}
-                \BPnode{0em,    -6em}{18}{23}{31}
-                \BPnode{12em,   -6em}{43}{}{}
-                \BPnode{-21em, -12em}{2}{3}{5}
-                \BPnode{-15em, -12em}{7}{11}{}
-                \BPnode{-9em,  -12em}{13}{17}{}
-                \BPnode{-3em,  -12em}{18}{19}{}
-                \BPnode{3em,   -12em}{23}{29}{}
-                \BPnode{9em,   -12em}{31}{36}{}
-                \BPnode{15em,  -12em}{37}{{\color{red}40}}{41}
-                \BPnode{21em,  -12em}{43}{47}{}
-                \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-                \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-                \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
-                \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
-                \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
-                \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
-                \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
-                \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
-                \draw[] ({3}Point4) to[out = -90, in = 90] (10D2);
-                \draw[] ({4}Point1) to[out = -90, in = 90] (11D2);
-                \draw[] ({4}Point2) to[out = -90, in = 90] (12D2);
-                \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-                \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-                \draw[] ({5}Point4) to (6P1);
-                \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-                \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-                \draw[] ({6}Point4) to (7P1);
-                \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-                \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-                \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
-                \draw[] ({7}Point4) to (8P1);
-                \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-                \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-                \draw[] ({8}Point4) to (9P1);
-                \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-                \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
-                \draw[] ({9}Point4) to (10P1);
-                \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
-                \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
-                \draw[] ({10}Point4) to (11P1);
-                \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
-                \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
-                \draw[] ({11}Point3) to ($({11}Point3) - (0, 2.0em)$);
-                \draw[] ({11}Point4) to (12P1);
-                \draw[] ({12}Point1) to ($({12}Point1) - (0, 2.0em)$);
-                \draw[] ({12}Point2) to ($({12}Point2) - (0, 2.0em)$);
+            \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+                \node at(  0  ,   0  ) (A1) {\B+(13|37|)};
+                \node at(-12em,  -6em) (B1) {\B+(7||)};
+                \node at(  0em,  -6em) (B2) {\B+(18|23|31)};
+                \node at( 12em,  -6em) (B3) {\B+(43||)};
+                \node at(-21em, -12em) (C1) {\B+(2|3|5)};
+                \node at(-15em, -12em) (C2) {\B+(7|11|)};
+                \node at( -9em, -12em) (C3) {\B+(13|17|)};
+                \node at( -3em, -12em) (C4) {\B+(18|19|)};
+                \node at(  3em, -12em) (C5) {\B+(23|29|)};
+                \node at(  9em, -12em) (C6) {\B+(31|36|)};
+                \node at( 15em, -12em) (C7) {\B+(37|{\color{red}40}|41)};
+                \node at( 21em, -12em) (C8) {\B+(43|47|)};
+                \foreach \i in {1, 2, 3}
+                    {
+                        \draw (A1.ptr\i) to (B\i);
+                    }
+                \foreach \i in {1, 2}
+                    {
+                        \draw (B1.ptr\i) to (C\i);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 4}
+                    {
+                        \draw (B2.ptr\i) to (C\j);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+6)] in {1, 2}
+                    {
+                        \draw (B3.ptr\i) to (C\j);
+                    }
+                \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2, 7/3, 8/1, 8/2}
+                    {
+                        \draw (C\i.ptr\j) -- +(0, -1);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+                    {
+                        \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+                    }
             \end{tikzpicture}
         }
         \caption{插入了 36, 18, 40 后的 B+ 树}
@@ -281,57 +211,44 @@
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \setcounter{BPTnodes}{0}
         \scalebox{0.80}{
-            \begin{tikzpicture}[arrows = {-triangle 45}]
-                \BPnode{0, 0}{13}{37}{}
-                \BPnode{-12em,  -6em}{7}{}{}
-                \BPnode{0em,    -6em}{18}{23}{31}
-                \BPnode{12em,   -6em}{{\color{green!70!black}41}}{}{}
-                \BPnode{-21em, -12em}{2}{3}{5}
-                \BPnode{-15em, -12em}{7}{11}{}
-                \BPnode{-9em,  -12em}{13}{17}{}
-                \BPnode{-3em,  -12em}{18}{19}{}
-                \BPnode{3em,   -12em}{23}{29}{}
-                \BPnode{9em,   -12em}{31}{36}{}
-                \BPnode{15em,  -12em}{37}{40}{}
-                \BPnode{21em,  -12em}{{\color{green!70!black}41}}{47}{}
-                \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-                \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-                \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
-                \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
-                \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
-                \draw[] ({3}Point1) to[out = -90, in = 90] (7D2);
-                \draw[] ({3}Point2) to[out = -90, in = 90] (8D2);
-                \draw[] ({3}Point3) to[out = -90, in = 90] (9D2);
-                \draw[] ({3}Point4) to[out = -90, in = 90] (10D2);
-                \draw[] ({4}Point1) to[out = -90, in = 90] (11D2);
-                \draw[] ({4}Point2) to[out = -90, in = 90] (12D2);
-                \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-                \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-                \draw[] ({5}Point4) to (6P1);
-                \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-                \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-                \draw[] ({6}Point4) to (7P1);
-                \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-                \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-                \draw[] ({7}Point3) to ($({7}Point3) - (0, 2.0em)$);
-                \draw[] ({7}Point4) to (8P1);
-                \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-                \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-                \draw[] ({8}Point4) to (9P1);
-                \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-                \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
-                \draw[] ({9}Point4) to (10P1);
-                \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
-                \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
-                \draw[] ({10}Point4) to (11P1);
-                \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
-                \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
-                \draw[] ({11}Point3) to ($({11}Point3) - (0, 2.0em)$);
-                \draw[] ({11}Point4) to (12P1);
-                \draw[] ({12}Point1) to ($({12}Point1) - (0, 2.0em)$);
-                \draw[] ({12}Point2) to ($({12}Point2) - (0, 2.0em)$);
+            \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+                \node at(  0  ,   0  ) (A1) {\B+(13|37|)};
+                \node at(-12em,  -6em) (B1) {\B+(7||)};
+                \node at(  0em,  -6em) (B2) {\B+(18|23|31)};
+                \node at( 12em,  -6em) (B3) {\B+({\color{green!70!black}41}||)};
+                \node at(-21em, -12em) (C1) {\B+(2|3|5)};
+                \node at(-15em, -12em) (C2) {\B+(7|11|)};
+                \node at( -9em, -12em) (C3) {\B+(13|17|)};
+                \node at( -3em, -12em) (C4) {\B+(18|19|)};
+                \node at(  3em, -12em) (C5) {\B+(23|29|)};
+                \node at(  9em, -12em) (C6) {\B+(31|36|)};
+                \node at( 15em, -12em) (C7) {\B+(37|40|)};
+                \node at( 21em, -12em) (C8) {\B+({\color{green!70!black}41}|47|)};
+                \foreach \i in {1, 2, 3}
+                    {
+                        \draw (A1.ptr\i) to (B\i);
+                    }
+                \foreach \i in {1, 2}
+                    {
+                        \draw (B1.ptr\i) to (C\i);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 4}
+                    {
+                        \draw (B2.ptr\i) to (C\j);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+6)] in {1, 2}
+                    {
+                        \draw (B3.ptr\i) to (C\j);
+                    }
+                \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2, 8/1, 8/2}
+                    {
+                        \draw (C\i.ptr\j) -- +(0, -1);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+                    {
+                        \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+                    }
             \end{tikzpicture}
         }
         \caption{删除了 43 后的 B+ 树}
@@ -340,52 +257,44 @@
     \\[2em]
     \begin{subfigure}{\textwidth}
         \centering
-        \setcounter{BPTnodes}{0}
         \scalebox{0.80}{
-            \begin{tikzpicture}[arrows = {-triangle 45}]
-                \BPnode{0, 0}{{\color{green!70!black}17}}{37}{}
-                \BPnode{-12em,  -6em}{7}{}{}
-                \BPnode{0em,    -6em}{23}{31}{}
-                \BPnode{12em,   -6em}{41}{}{}
-                \BPnode{-18em, -12em}{2}{3}{5}
-                \BPnode{-12em, -12em}{7}{11}{}
-                \BPnode{-6em,  -12em}{{\color{green!70!black}17}}{18}{19}
-                \BPnode{0em,   -12em}{23}{29}{}
-                \BPnode{6em,   -12em}{31}{36}{}
-                \BPnode{12em,  -12em}{37}{40}{}
-                \BPnode{18em,  -12em}{41}{47}{}
-                \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-                \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-                \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
-                \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
-                \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
-                \draw[] ({3}Point1) to[out = -80, in = 80] (7D2);
-                \draw[] ({3}Point2) to[out = -80, in = 80] (8D2);
-                \draw[] ({3}Point3) to[out = -80, in = 80] (9D2);
-                \draw[] ({4}Point1) to[out = -80, in = 80] (10D2);
-                \draw[] ({4}Point2) to[out = -80, in = 80] (11D2);
-                \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-                \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-                \draw[] ({5}Point4) to (6P1);
-                \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-                \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-                \draw[] ({6}Point3) to ($({6}Point3) - (0, 2.0em)$);
-                \draw[green!70!black] ({6}Point4) to (7P1);
-                \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-                \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-                \draw[] ({7}Point4) to (8P1);
-                \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-                \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-                \draw[] ({8}Point4) to (9P1);
-                \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-                \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
-                \draw[] ({9}Point4) to (10P1);
-                \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
-                \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
-                \draw[] ({10}Point3) to ($({10}Point3) - (0, 2.0em)$);
-                \draw[] ({10}Point4) to (11P1);
-                \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
-                \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
+            \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+                \node at(  0  ,   0  ) (A1) {\B+({\color{green!70!black}17}|37|)};
+                \node at(-12em,  -6em) (B1) {\B+(7||)};
+                \node at(  0em,  -6em) (B2) {\B+(23|31|)};
+                \node at( 12em,  -6em) (B3) {\B+(41||)};
+                \node at(-18em, -12em) (C1) {\B+(2|3|5)};
+                \node at(-12em, -12em) (C2) {\B+(7|11|)};
+                \node at( -6em, -12em) (C3) {\B+({\color{green!70!black}17}|18|19)};
+                \node at(  0em, -12em) (C4) {\B+(23|29|)};
+                \node at(  6em, -12em) (C5) {\B+(31|36|)};
+                \node at( 12em, -12em) (C6) {\B+(37|40|)};
+                \node at( 18em, -12em) (C7) {\B+(41|47|)};
+                \foreach \i in {1, 2, 3}
+                    {
+                        \draw (A1.ptr\i) to (B\i);
+                    }
+                \foreach \i in {1, 2}
+                    {
+                        \draw (B1.ptr\i) to (C\i);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 3}
+                    {
+                        \draw (B2.ptr\i) to (C\j);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+5)] in {1, 2}
+                    {
+                        \draw (B3.ptr\i) to (C\j);
+                    }
+                \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 3/3, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2}
+                    {
+                        \draw (C\i.ptr\j) -- +(0, -1);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+                    {
+                        \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+                    }
+                \draw [green!70!black] (C2.ptr4) to[out = 0, in = 180] (C3.proc);
             \end{tikzpicture}
         }
         \caption{删除了 43, 13 后的 B+ 树}
@@ -394,52 +303,43 @@
     \\[2em]
     \begin{subfigure}{\textwidth}
         \centering
-        \setcounter{BPTnodes}{0}
         \scalebox{0.80}{
-            \begin{tikzpicture}[arrows = {-triangle 45}]
-                \BPnode{0, 0}{17}{37}{}
-                \BPnode{-12em,  -6em}{{\color{green!70!black}5}}{}{}
-                \BPnode{0em,    -6em}{23}{31}{}
-                \BPnode{12em,   -6em}{41}{}{}
-                \BPnode{-18em, -12em}{2}{3}{}
-                \BPnode{-12em, -12em}{{\color{green!70!black}5}}{11}{}
-                \BPnode{-6em,  -12em}{17}{18}{19}
-                \BPnode{0em,   -12em}{23}{29}{}
-                \BPnode{6em,   -12em}{31}{36}{}
-                \BPnode{12em,  -12em}{37}{40}{}
-                \BPnode{18em,  -12em}{41}{47}{}
-                \draw[] ({1}Point1) to[out = -90, in = 90] (2D2);
-                \draw[] ({1}Point2) to[out = -90, in = 90] (3D2);
-                \draw[] ({1}Point3) to[out = -90, in = 90] (4D2);
-                \draw[] ({2}Point1) to[out = -90, in = 90] (5D2);
-                \draw[] ({2}Point2) to[out = -90, in = 90] (6D2);
-                \draw[] ({3}Point1) to[out = -80, in = 80] (7D2);
-                \draw[] ({3}Point2) to[out = -80, in = 80] (8D2);
-                \draw[] ({3}Point3) to[out = -80, in = 80] (9D2);
-                \draw[] ({4}Point1) to[out = -80, in = 80] (10D2);
-                \draw[] ({4}Point2) to[out = -80, in = 80] (11D2);
-                \draw[] ({5}Point1) to ($({5}Point1) - (0, 2.0em)$);
-                \draw[] ({5}Point2) to ($({5}Point2) - (0, 2.0em)$);
-                \draw[] ({5}Point4) to (6P1);
-                \draw[] ({6}Point1) to ($({6}Point1) - (0, 2.0em)$);
-                \draw[] ({6}Point2) to ($({6}Point2) - (0, 2.0em)$);
-                \draw[] ({6}Point3) to ($({6}Point3) - (0, 2.0em)$);
-                \draw[] ({6}Point4) to (7P1);
-                \draw[] ({7}Point1) to ($({7}Point1) - (0, 2.0em)$);
-                \draw[] ({7}Point2) to ($({7}Point2) - (0, 2.0em)$);
-                \draw[] ({7}Point4) to (8P1);
-                \draw[] ({8}Point1) to ($({8}Point1) - (0, 2.0em)$);
-                \draw[] ({8}Point2) to ($({8}Point2) - (0, 2.0em)$);
-                \draw[] ({8}Point4) to (9P1);
-                \draw[] ({9}Point1) to ($({9}Point1) - (0, 2.0em)$);
-                \draw[] ({9}Point2) to ($({9}Point2) - (0, 2.0em)$);
-                \draw[] ({9}Point4) to (10P1);
-                \draw[] ({10}Point1) to ($({10}Point1) - (0, 2.0em)$);
-                \draw[] ({10}Point2) to ($({10}Point2) - (0, 2.0em)$);
-                \draw[] ({10}Point3) to ($({10}Point3) - (0, 2.0em)$);
-                \draw[] ({10}Point4) to (11P1);
-                \draw[] ({11}Point1) to ($({11}Point1) - (0, 2.0em)$);
-                \draw[] ({11}Point2) to ($({11}Point2) - (0, 2.0em)$);
+            \begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+                \node at(  0  ,   0  ) (A1) {\B+(17|37|)};
+                \node at(-12em,  -6em) (B1) {\B+({\color{green!70!black}5}||)};
+                \node at(  0em,  -6em) (B2) {\B+(23|31|)};
+                \node at( 12em,  -6em) (B3) {\B+(41||)};
+                \node at(-18em, -12em) (C1) {\B+(2|3|)};
+                \node at(-12em, -12em) (C2) {\B+({\color{green!70!black}5}|11|)};
+                \node at( -6em, -12em) (C3) {\B+(17|18|19)};
+                \node at(  0em, -12em) (C4) {\B+(23|29|)};
+                \node at(  6em, -12em) (C5) {\B+(31|36|)};
+                \node at( 12em, -12em) (C6) {\B+(37|40|)};
+                \node at( 18em, -12em) (C7) {\B+(41|47|)};
+                \foreach \i in {1, 2, 3}
+                    {
+                        \draw (A1.ptr\i) to (B\i);
+                    }
+                \foreach \i in {1, 2}
+                    {
+                        \draw (B1.ptr\i) to (C\i);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 3}
+                    {
+                        \draw (B2.ptr\i) to (C\j);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+5)] in {1, 2}
+                    {
+                        \draw (B3.ptr\i) to (C\j);
+                    }
+                \foreach \i/\j in {1/1, 1/2, 2/1, 2/2, 3/1, 3/2, 3/3, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2}
+                    {
+                        \draw (C\i.ptr\j) -- +(0, -1);
+                    }
+                \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+                    {
+                        \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+                    }
             \end{tikzpicture}
         }
         \caption{删除了 43, 13, 7 后的 B+ 树}

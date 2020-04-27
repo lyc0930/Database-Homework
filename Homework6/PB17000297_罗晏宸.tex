@@ -461,26 +461,18 @@
 \subparagraph{2)} 前一问题中，如果换成线性散列索引，其余假设不变，同时假设只有当插入新键值后空间利用率大于 80\%时才增加新的桶，则全部键值按序插入完成后该散列索引中共有几个桶？并请写出键值 B 所在的桶中的全部键值（包括溢出块中的键值）。
 
 \paragraph{解}
-\subparagraph{1)} 分别在 B、E、G 插入时加倍桶的数目，最终共有 8 个桶，键值 E 所在的桶中的全部键值如下
+\subparagraph{1)} 分别在 B、F、G 插入时加倍桶的数目，最终共有 6(8) 个桶，键值 E 所在的桶中的全部键值如下
 \begin{table}[H]
     \centering
-    \begin{tabular}{cc}
-        E [10100] & K [10101]
+    \begin{tabular}{ccc}
+        E [10100] & I [10001] & K [10101]
     \end{tabular}
 \end{table}
-
 \subparagraph{2)} 分别在 C、E、H、J、M 插入时增加新桶，最终共有 6 个桶，键值 B 所在的桶中的全部键值如下
 \begin{table}[H]
     \centering
     \begin{tabular}{ccc}
-        A [11001] & B [00111] & I [10001]
-    \end{tabular}
-\end{table}
-溢出块中键值为
-\begin{table}[H]
-    \centering
-    \begin{tabular}{c}
-        N [11111]
+        B [00111] & G [00011] & N [11111]
     \end{tabular}
 \end{table}
 \end{document}

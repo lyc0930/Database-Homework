@@ -11,6 +11,10 @@
 \usepackage{listings}
 \usepackage{amsthm}
 \usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{dashrule}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 
 \def\rightbrace#1{#1)}
 
@@ -23,14 +27,32 @@
     numbers = left,
     numberstyle = \rightbrace,
     frame = none,
+    emph = CHECKPOINT,
+    emphstyle = \textbf,
+    escapeinside = ``,
 }
 
 \geometry{left = 2cm, right = 2cm}
 \makeatletter
-\renewcommand{\section}{\@startsection{section}{1}{0mm}
-                                {-5ex plus -.5ex minus -.2ex}
-                                {3ex plus .2ex}
-                                {\normalfont\large\bfseries}}
+\let\origthelstnumber\lst@PlaceNumber
+
+\renewcommand{\section}{\@startsection{section}{1}{0mm}{-5ex plus -.5ex minus -.2ex}{3ex plus .2ex}
+{\normalfont\large\bfseries}}
+
+\newcommand*\Suppressnumber{%
+  \lst@AddToHook{OnNewLine}{%
+    \let\lst@PlaceNumber\relax%
+%    \advance\c@lstnumber-\@ne\relax% Not really necessary
+  }%
+}
+
+\newcommand\Reactivatenumber[1]{%
+  \global\c@lstnumber#1%
+  \global\advance\c@lstnumber\m@ne\relax%
+  \lst@AddToHook{OnNewLine}{%
+  \let\lst@PlaceNumber\origthelstnumber%
+  }%
+}
 \makeatother
 \title{Homework 7}
 \author{PB17000297 罗晏宸}
@@ -50,6 +72,9 @@
 \paragraph{解}
 
 \section{下面是一个数据库系统开始运行后的日志记录，该数据库系统支持检查点。}
+设日志修改记录的格式为 \lstinline{<Tid, Variable, Old value, New value>}，请给出对于题中所示\textcircled{1}、
+\textcircled{2}、\textcircled{3}三种故障情形下，数据库系统恢复的过程以及数据元素 A, B, C, D, E, F 和 G 在执行了恢复过程后的值。
+\newpage
 \begin{lstlisting}[]
 <T1, Begin Transaction>
 <T1, A, 10, 40>
@@ -60,22 +85,28 @@
 <T2, D, 40, 80>
 <T1, Commit Transaction>
 <T3, Begin Transaction>
-<T3, E, 50, 90>
+<T3, E, 50, 90>`\tikz[remember picture, baseline] \node [anchor=base, blue] (anchor1) {};`
 <T2, D, 80, 65>
 <T2, C, 50, 75>
-<T2, Commit Transaction>
+<T2, Commit Transaction>`\tikz[remember picture, baseline] \node [anchor=base, blue] (anchor2) {};`
 <T3, Commit Transaction>
 <CHECKPOINT>
 <T4, Begin Transaction>
 <T4, F, 60, 120>
-<T4, G, 70, 140>
+<T4, G, 70, 140>`\tikz[remember picture, baseline] \node [anchor=base, blue] (anchor3) {};`
 <T4, F, 120, 240>
 <T4, Commit Transaction>
 \end{lstlisting}
-设日志修改记录的格式为 \lstinline{<Tid, Variable, Old value, New value>}，请给出对于题中所示\textcircled{1}、
-\textcircled{2}、\textcircled{3}三种故障情形下，数据库系统恢复的过程以及数据元素 A, B, C, D, E, F 和 G 在执
-行了恢复过程后的值。
-
+\begin{tikzpicture}[overlay, remember picture]
+    \node (1) [below right = -0.7em and 7em of anchor1] {\textcircled{1}};
+    \foreach \i in {2, 3}
+        {
+            \node (temp\i) [below = -0.6em of anchor\i] {\phantom{\i}};
+            \node (\i) at (1 |- temp\i) {\textcircled{\i}};
+        }
+    \foreach \i in {1, 2, 3}
+    \draw[dashed] (\i) +(-1, 0) -- +(-22em, 0);
+\end{tikzpicture}
 \paragraph{解}
 
 \end{document}

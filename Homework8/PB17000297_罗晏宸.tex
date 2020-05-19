@@ -1,0 +1,138 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks, linkcolor = black]{hyperref}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{dashrule}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\def\rightbrace#1{#1)}
+
+\lstdefinestyle{log}
+{
+    basicstyle = \ttfamily,
+    keywordstyle = \bfseries,
+    linewidth = \linewidth,
+    xleftmargin=.2\textwidth,
+    xrightmargin=.2\textwidth,
+    numbers = left,
+    numberstyle = \rightbrace,
+    frame = none,
+    emph = {LOCK, READ, WAIT, WRITE, UNLOCK, ROLLBACK},
+    emphstyle = \textbf,
+    mathescape = true,
+    escapeinside = ``,
+}
+
+\geometry{left = 2cm, right = 2cm}
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}{-5ex plus -.5ex minus -.2ex}{3ex plus .2ex}
+{\normalfont\large\bfseries}}
+\makeatother
+
+\newcommand{\tikzmark}[3][]
+  {\tikz[remember picture, baseline, every node/.style={inner sep=0,outer sep=0}]
+    \node [anchor = base, #1](#2) {#3};}
+
+\title{Homework 8}
+\author{PB17000297 罗晏宸}
+\date{May 19 2020}
+
+\begin{document}
+\maketitle
+
+\section{证明：如果一个并发调度 S 中的所有事务都遵循 2PL，则该调度必定是可串化调度。}
+
+\paragraph{解}
+如果一个并发调度 S 中的所有事务都遵循 2PL，则加锁操作一定在解锁前。若在冲突图中有关于 $A$ 的边$T_1 \rightarrow T_2$，则 $T_2$ 对 $A$ 的锁的申请一定在 $T_1$ 释放之后才进行，之后$T_1$对$A$不再进行读或写。假设冲突图中有环，则存在申请过$A$的锁的事务在另一事务之后再次申请，这是违背 2PL 的。因此调度是可串化的。
+
+\section{在锁的相容性矩阵中，\lstinline[style = log]{<S, U>}（即 $T_1$ 先持有了某对象上的 S 锁，$T_2$ 再申请同一对象上的 U 锁时）是相容的，而\lstinline[style = log]{<U, S>}是不相容的。请解释一下 DBMS 为什么要设计这样不对称的锁相容性规则。}
+
+\paragraph{解}
+若\lstinline[style = log]{<S, U>}不相容，则不论 $T_1$ 是否对对象进行修改，都不允许 任何 $T_2$ 申请 U 锁，这会影响到并发性能。若\lstinline[style = log]{<U, S>}是相容的，则若 $T_1$ 意图对对象进行修改，则不能阻止后续的事务申请同一对象上的 S 锁。
+
+\section{采用了两阶段锁协议的事务是否一定不会出现脏读问题？如果是，请解释理由；如果不是，请给出一个反例。}
+
+\paragraph{解}
+不是，反例如下：
+\begin{table}[h]
+    \centering
+    \begin{tabular}{rll}
+          & $T_1$                   & $T_2$                                       \\
+        1 & \lstinline[style = log]!LOCK($A$);!  &                                             \\
+        2 & \lstinline[style = log]!READ($A$, $t$);!  & \lstinline[style = log]!LOCK($A$);!                      \\
+        3 & \lstinline[style = log]!$t \leftarrow t + 100$;!  & \lstinline[style = log]!WAIT;!                      \\
+        4 & \lstinline[style = log]!WRITE($A$, $t$);!  & \lstinline[style = log]!WAIT;!                      \\
+        5 & \lstinline[style = log]!UNLOCK($A$);! & \lstinline[style = log]!WAIT;!                     \\
+        6 & \lstinline[style = log]!ROLLBACK;! & \tikzmark{Anchor1}{\lstinline[style = log]!READ($A$, $t$);!} \\
+    \end{tabular}
+\end{table}
+\begin{tikzpicture}[overlay, remember picture, node distance = 1.5cm]
+    \node (Mark1) [below right = 0.5 em and 2em of Anchor1] {脏读};
+    \draw [->,thick] (Mark1) to [in = -60, out = 180] (Anchor1);
+\end{tikzpicture}
+
+\section{判断下面的并发调度是否冲突可串？如果是，请给出冲突等价的串行调度事务顺序；如果不是，请解释理由。}
+\begin{large}
+    $$
+        w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ w_1(D)\ w_3(B)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B)
+    $$
+\end{large}
+\paragraph{解}
+是冲突可串的，冲突等价的串行调度事务顺序如下可得：
+\begin{large}
+    \begin{align*}
+        w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ \tikzmark[blue]{Anchor2-a}{$w_1(D)$}\ \tikzmark[blue]{Anchor2-b}{$w_3(B)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        w_3(D)\ r_1(A)\ w_2(A)\ \tikzmark[blue]{Anchor3-a}{$r_4(A)$}\ \tikzmark[blue]{Anchor3-b}{$r_1(C)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ w_1(D)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        w_3(D)\ r_1(A)\ w_2(A)\ r_1(C)\ \tikzmark[blue]{Anchor4-a}{$r_4(A)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ \tikzmark[blue]{Anchor4-b}{$w_1(D)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        \tikzmark[blue]{Anchor5-a}{$w_3(D)$}\ r_1(A)\ \tikzmark[blue]{Anchor5-b}{$w_2(A)$}\ r_1(C)\ w_1(D)\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        w_2(A)\ r_1(A)\ \tikzmark[blue]{Anchor6-a}{$w_3(D)$}\ r_1(C)\ w_1(D)\ \tikzmark[blue]{Anchor6-b}{$w_2(B)$}\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        w_2(A)\ \tikzmark[blue]{Anchor7-a}{$r_1(A)$}\ \tikzmark[blue]{Anchor7-b}{$w_2(B)$}\ r_1(C)\ w_1(D)\ w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        \underbrace{w_2(A)\ w_2(B)}_{\displaystyle T_2}\,\underbrace{r_1(A)\ r_1(C)\ w_1(D)}_{\displaystyle T_1}\,\underbrace{w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)}_{\displaystyle T_3}\,\underbrace{r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B)}_{\displaystyle T_4}
+    \end{align*}
+\end{large}
+\begin{tikzpicture}[overlay, remember picture, node distance = 1.5cm]
+    \foreach \i in {2, 3, 7}
+    \draw [<->, thick, blue!70!black] (Anchor\i-a) to [in = -120, out = -60] (Anchor\i-b);
+    \draw [<->, thick, blue!70!black] (Anchor4-a) to [in = -165, out = -15] (Anchor4-b);
+    \draw [<->, thick, blue!70!black] (Anchor5-a) to [in = -150, out = -30] (Anchor5-b);
+    \draw [<->, thick, blue!70!black] (Anchor6-a) to [in = -160, out = -20] (Anchor6-b);
+\end{tikzpicture}
+
+\section{判断下面的并发调度能否由一个使用 2PL 的调度器生成。如果可以，给出一种可能的加锁解锁的顺序；如果不行，请解释理由。}
+\begin{large}
+    $$
+        w_3(x)\ w_4(y)\ w_1(z)\ w_3(a)\ w_3(y)\ w_2(a)\ w_3(x)\ w_3(x)\ w_1(a)\ w_3(y)\ w_2(z)\ w_1(x)
+    $$
+\end{large}
+\newpage
+\paragraph{解}
+不可以，一个不满足 2PL 的加锁解锁顺序如下，注意到在释放对$a$的锁之后，事务$T_1$进入缩减阶段，不能再申请新锁，而事务最后的$w_1(x)$要求对$x$增加排它锁，因此并发调度不能由一个使用 2PL 的调度器生成。
+\begin{large}
+    \begin{equation*}
+        \tikzmark{Insert0}{}w_3(x)\tikzmark{Insert1}{$\ $}w_4(y)\tikzmark{Insert2}{$\ $}w_1(z)\tikzmark{Insert3}{$\ $}w_3(a)\tikzmark{Insert4}{$\ $}w_3(y)\tikzmark{Insert5}{$\ $}w_2(a)\tikzmark{Insert6}{$\ $}w_3(x)\tikzmark{Insert7}{$\ $}w_1(a)\tikzmark{Insert8}{$\ $}w_3(y)\tikzmark{Insert9}{$\ $}w_2(z)\tikzmark{Insert10}{$\ $}w_1(x)\tikzmark{Insert11}{}
+    \end{equation*}
+\end{large}
+\begin{tikzpicture}[overlay, remember picture]
+    \foreach \i/\j in {0/{$L_3(x)$}, 1/{$L_4(y)$}, 2/{$L_1(z)$}, 3/{$L_3(a)$}, 5/{$U_3(a),\,L_2(a)$}, 9/{$U_1(z),\,L_2(z)$}}
+    \node (Mark\i) [blue, below = 1em of Insert\i] {\j};
+    \foreach \i/\j in {4/{$U_4(y),\,L_3(y)$}, 7/{$U_2(a),\,L_1(a)$}, 10/{$U_3(x),\,L_1(x)$}}
+    \node (Mark\i) [blue, below = 3em of Insert\i] {\j};
+    \foreach \i/\j in {11/{$U_1(x),\,U_3(y),\,U_2(z),\,U_1(a)$}}
+    \node (Mark\i) [blue, below = 5em of Insert\i] {\j};
+    \foreach \i in {0, ...,5,7,9,10, 11}
+    \draw [blue, ->,thick] (Mark\i) to [in = -90, out = 90] (Insert\i);
+\end{tikzpicture}
+
+\end{document}

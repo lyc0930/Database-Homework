@@ -90,24 +90,25 @@
     $$
 \end{large}
 \paragraph{解}
-是冲突可串的，冲突等价的串行调度事务顺序如下可得：
+不是冲突可串的，尝试给出调度事务顺序：
 \begin{large}
     \begin{align*}
         w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ \tikzmark[blue]{Anchor2-a}{$w_1(D)$}\ \tikzmark[blue]{Anchor2-b}{$w_3(B)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
         w_3(D)\ r_1(A)\ w_2(A)\ \tikzmark[blue]{Anchor3-a}{$r_4(A)$}\ \tikzmark[blue]{Anchor3-b}{$r_1(C)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ w_1(D)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
         w_3(D)\ r_1(A)\ w_2(A)\ r_1(C)\ \tikzmark[blue]{Anchor4-a}{$r_4(A)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ \tikzmark[blue]{Anchor4-b}{$w_1(D)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        \tikzmark[blue]{Anchor5-a}{$w_3(D)$}\ r_1(A)\ \tikzmark[blue]{Anchor5-b}{$w_2(A)$}\ r_1(C)\ w_1(D)\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        w_2(A)\ r_1(A)\ \tikzmark[blue]{Anchor6-a}{$w_3(D)$}\ r_1(C)\ w_1(D)\ \tikzmark[blue]{Anchor6-b}{$w_2(B)$}\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        w_2(A)\ \tikzmark[blue]{Anchor7-a}{$r_1(A)$}\ \tikzmark[blue]{Anchor7-b}{$w_2(B)$}\ r_1(C)\ w_1(D)\ w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        \underbrace{w_2(A)\ w_2(B)}_{\displaystyle T_2}\,\underbrace{r_1(A)\ r_1(C)\ w_1(D)}_{\displaystyle T_1}\,\underbrace{w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)}_{\displaystyle T_3}\,\underbrace{r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B)}_{\displaystyle T_4}
+        \tikzmark[red]{Anchor5-a}{$w_3(D)$}\ r_1(A)\ \tikzmark[red]{Anchor5-b}{$w_2(A)$}\ r_1(C)\ w_1(D)\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) %\\
+        % w_2(A)\ r_1(A)\ \tikzmark[blue]{Anchor6-a}{$w_3(D)$}\ r_1(C)\ w_1(D)\ \tikzmark[blue]{Anchor6-b}{$w_2(B)$}\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        % w_2(A)\ \tikzmark[blue]{Anchor7-a}{$r_1(A)$}\ \tikzmark[blue]{Anchor7-b}{$w_2(B)$}\ r_1(C)\ w_1(D)\ w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
+        % \underbrace{w_2(A)\ w_2(B)}_{\displaystyle T_2}\,\underbrace{r_1(A)\ r_1(C)\ w_1(D)}_{\displaystyle T_1}\,\underbrace{w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)}_{\displaystyle T_3}\,\underbrace{r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B)}_{\displaystyle T_4}
     \end{align*}
 \end{large}
+交换无法继续进行，并发调度不是冲突可串的。
 \begin{tikzpicture}[overlay, remember picture, node distance = 1.5cm]
-    \foreach \i in {2, 3, 7}
+    \foreach \i in {2, 3}
     \draw [<->, thick, blue!70!black] (Anchor\i-a) to [in = -120, out = -60] (Anchor\i-b);
     \draw [<->, thick, blue!70!black] (Anchor4-a) to [in = -165, out = -15] (Anchor4-b);
-    \draw [<->, thick, blue!70!black] (Anchor5-a) to [in = -150, out = -30] (Anchor5-b);
-    \draw [<->, thick, blue!70!black] (Anchor6-a) to [in = -160, out = -20] (Anchor6-b);
+    \draw [<->, thick, red!70!black] (Anchor5-a) to [in = -150, out = -30] (Anchor5-b);
+    % \draw [<->, thick, blue!70!black] (Anchor6-a) to [in = -160, out = -20] (Anchor6-b);
 \end{tikzpicture}
 
 \section{判断下面的并发调度能否由一个使用 2PL 的调度器生成。如果可以，给出一种可能的加锁解锁的顺序；如果不行，请解释理由。}

@@ -1,0 +1,103 @@
+% The tikz-B+Tree package.
+% Ver. 0.7
+% Luo Yanchen 2020
+
+\ProvidesPackage{tikz-B+Tree}[2020/04/27 (3 - 4)B+Tree nodes using the Tikz library]
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc, shapes.multipart, positioning, arrows}
+\makeatletter
+\tikzset{
+    B+node/.style={
+        draw,
+        BPTbasenode,
+        text height = 2.8ex,
+        text width = 4ex,
+        text depth = 1.2ex,
+        align = center,
+        rectangle split horizontal,
+        rectangle split parts = 3,
+        rectangle split every empty part={},% resets empty-part macro (explanation below)
+        rectangle split empty part width = 2.8em,
+        rectangle split empty part height = 2.8em,
+        rectangle split empty part depth = 1.5em,
+        rectangle split part align = base,
+        inner sep = 0ex,
+    },
+    Pointer/.style={
+        arrows = {-triangle 45},
+        out = -90, in = 90
+    },
+}
+\newcommand*{\define@anchor@p}[1]{%
+\anchor{ptr#1}{%
+    \csname pgf@anchor@rectangle split@south west\endcsname
+    \pgf@xa=\pgf@x \pgf@ya=\pgf@y\relax%
+    \csname pgf@anchor@rectangle split@north east\endcsname
+    \pgf@xb=\pgf@x \pgf@yb=\pgf@y\relax%
+    % \southwest \pgf@xa=\pgf@x \pgf@ya=\pgf@y%
+    % \northeast \pgf@xb=\pgf@x \pgf@yb=\pgf@y%
+    \pgf@y=\dimexpr 1.5\pgf@ya - 0.5\pgf@yb
+    \pgf@x=\dimexpr 0.875\pgf@xa + 0.125\pgf@xb + (\pgf@xb-\pgf@xa)*(#1 - 1)/4\relax
+}%
+}
+\newbox\pgfnodeparttwobox
+\newbox\pgfnodepartthreebox
+\pgfdeclareshape{BPTbasenode}{%
+\nodeparts{text,two,three}
+    \inheritsavedanchors[from=rectangle split]
+    \inheritanchorborder[from=rectangle split]
+    \inheritanchor[from=rectangle split]{north}
+    \inheritanchor[from=rectangle split]{north west}
+    \inheritanchor[from=rectangle split]{west}
+    \inheritanchor[from=rectangle split]{center}
+    \inheritanchor[from=rectangle split]{east}
+    \inheritanchor[from=rectangle split]{base}
+    \inheritanchor[from=rectangle split]{south}
+    \inheritanchor[from=rectangle split]{south east}
+    \inheritanchor[from=rectangle split]{text}
+    \inheritanchor[from=rectangle split]{text split}
+    \inheritanchor[from=rectangle split]{two}
+    \inheritanchor[from=rectangle split]{two split}
+    \inheritanchor[from=rectangle split]{three}
+    \inheritbackgroundpath[from=rectangle split]
+    \count@=1 %
+    \@whilenum\count@<5 \do{%
+        \expandafter\define@anchor@p\expandafter{\the\count@}%
+        \advance\count@\@ne
+    }%
+    \anchor{proc}
+    {
+        \csname pgf@anchor@rectangle split@south west\endcsname
+        \pgf@xa=\pgf@x \pgf@ya=\pgf@y\relax%
+        \csname pgf@anchor@rectangle split@north east\endcsname
+        \pgf@xb=\pgf@x \pgf@yb=\pgf@y\relax%
+        \pgf@y=\dimexpr 1.5\pgf@ya - 0.5\pgf@yb
+        \pgf@x=\pgf@xa
+    }
+    \beforebackgroundpath{
+        % store lower right in xa/ya and upper right in xb/yb
+        \southwest \pgf@xa=\pgf@x \pgf@ya=\pgf@y%
+        \northeast \pgf@xb=\pgf@x \pgf@yb=\pgf@y%
+        % offset of valve part
+        \pgf@xc=0pt \pgf@yc=\dimexpr \pgf@yb - \pgf@ya%
+
+        % construct main path
+        \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}%
+        \pgfpathlineto{\pgfpointadd{\pgfpoint{\pgf@xa}{\pgf@ya}}{\pgfpoint{\pgf@xc}{-\pgf@yc}}}%
+        \pgfpathlineto{\pgfpointadd{\pgfpoint{\pgf@xb}{\pgf@ya}}{\pgfpoint{\pgf@xc}{-\pgf@yc}}}%
+        \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@ya}}%
+        \pgf@yd=0pt \pgf@xd=\dimexpr 0.25\pgf@xb - 0.25\pgf@xa%
+        \count@=0 %
+        \@whilenum\count@<3 \do{%
+            \advance \pgf@xa by \pgf@xd
+            \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}%
+            \pgfpathlineto{\pgfpointadd{\pgfpoint{\pgf@xa}{\pgf@ya}}{\pgfpoint{\pgf@xc}{-\pgf@yc}}}%
+            \advance\count@\@ne
+        }%
+        \pgfpathclose%
+        \pgfusepath{draw}
+    }
+}
+\makeatother
+\def\B+(#1|#2|#3){#1\nodepart{two}#2\nodepart{three}#3}

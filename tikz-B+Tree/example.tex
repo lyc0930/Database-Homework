@@ -1,0 +1,42 @@
+\documentclass{standalone}
+\usepackage{tikz-B+Tree}
+\begin{document}
+\begin{tikzpicture}[every node/.style = {B+node,draw}, every path/.style = {Pointer}]
+    \node at(  0  ,   0  ) (A1) {\B+(13|{\color{blue}37}|)};
+    \node at(-12em,  -6em) (B1) {\B+(7||)};
+    \node at(  0em,  -6em) (B2) {\B+({\color{blue}23}|{\color{blue}31}|)};
+    \node at( 12em,  -6em) (B3) {\B+({\color{blue}43}||)};
+    \node at(-18em, -12em) (C1) {\B+(2|3|5)};
+    \node at(-12em, -12em) (C2) {\B+(7|11|)};
+    \node at( -6em, -12em) (C3) {\B+(13|17|19)};
+    \node at(  0em, -12em) (C4) {\B+(23|29|)};
+    \node at(  6em, -12em) (C5) {\B+({\color{blue}31}|{\color{red}36}|)};
+    \node at( 12em, -12em) (C6) {\B+({\color{blue}37}|{\color{blue}41}|)};
+    \node at( 18em, -12em) (C7) {\B+(43|47|)};
+    \foreach \i in {1, 2, 3}
+        {
+            \draw (A1.ptr\i) to (B\i);
+        }
+    \foreach \i in {1, 2}
+        {
+            \draw (B1.ptr\i) to (C\i);
+        }
+    \foreach \i [evaluate=\i as \j using int(\i+2)] in {1, ..., 3}
+        {
+            \draw (B2.ptr\i) to (C\j);
+        }
+    \foreach \i [evaluate=\i as \j using int(\i+5)] in {1, 2}
+        {
+            \draw (B3.ptr\i) to (C\j);
+        }
+    \foreach \i/\j in {1/1, 1/2, 1/3, 2/1, 2/2, 3/1, 3/2, 3/3, 4/1, 4/2, 5/1, 5/2, 6/1, 6/2, 7/1, 7/2}
+        {
+            \draw (C\i.ptr\j) -- +(0, -1);
+        }
+    \foreach \i [evaluate=\i as \j using int(\i+1)] in {1, ..., 6}
+        {
+            \draw (C\i.ptr4) to[out = 0, in = 180] (C\j.proc);
+        }
+    \draw [blue] (C5.ptr4) to[out = 0, in = 180] (C6.proc);
+\end{tikzpicture}
+\end{document}

@@ -42,7 +42,7 @@ Homework assignments of **An Introduction to Database System**
 
 -   数据库数据结构
     -   B+ 树
-    -   [个人完成的用以绘制 B+ 树的 TikZ 包](https://github.com/lyc0930/Database-Homework/tree/master/tikz-B+Tree/tikz-B+Tree.sty)，[用法](#tikz-B+Tree)
+    -   [个人完成的用以绘制 B+ 树的 TikZ 包](https://github.com/lyc0930/Database-Homework/tree/master/tikz-B+Tree/tikz-B+Tree.sty)，[用法](#B+Tree-包)
     -   可扩展 Hash
 
 ## [Homework 7](https://github.com/lyc0930/Database-Homework/tree/master/Homework7)
@@ -59,7 +59,7 @@ Homework assignments of **An Introduction to Database System**
 
 ---
 
-## tikz-B+Tree
+## B+Tree 包
 
 一个简单的用于绘制 3-4 B+ 树结点的 TikZ 包
 
@@ -120,8 +120,4 @@ Homework assignments of **An Introduction to Database System**
 \end{document}
 ```
 
-<object data="https://github.com/lyc0930/Database-Homework/tree/master/tikz-B+Tree/example.pdf" type="application/pdf" width="550px" height="232px">
-    <embed src="https://github.com/lyc0930/Database-Homework/tree/master/tikz-B+Tree/example.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/lyc0930/Database-Homework/tree/master/tikz-B+Tree/example.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
+![image-20200526201019692](https://github.com/lyc0930/Database-Homework/tree/master/tikz-B+Tree/example.png)

@@ -23,7 +23,7 @@ Homework assignments of **An Introduction to Database System**
 
 -   SQL 查询
 
-## [Homework 4](https://github.com/lyc0930/Database-Homework/tree/master/Homework4)
+## [Homework 4（有误）](https://github.com/lyc0930/Database-Homework/tree/master/Homework4)
 
 4.8
 

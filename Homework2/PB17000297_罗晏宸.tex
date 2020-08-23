@@ -87,10 +87,10 @@
 
 
 \section{T1 教材的首页给出了一个供应商、零件、工程数据库：
-  \protect\\ \indent 供应商：S (S\#, sname, status, city)
-  \protect\\ \indent 零件：P (P\#, pname, color, weight, city)
-  \protect\\ \indent 工程：J (J\#, jname, city)
-  \protect\\ \indent 供应：SPJ (S\#, J\#, P\#, QTY) 表示供应商 S\#为工程 J\#供应了 QTY 数量的零件 P\#
+  \protect\\ \indent 供应商：S (S\texttt{\#}, sname, status, city)
+  \protect\\ \indent 零件：P (P\texttt{\#}, pname, color, weight, city)
+  \protect\\ \indent 工程：J (J\texttt{\#}, jname, city)
+  \protect\\ \indent 供应：SPJ (S\texttt{\#}, J\texttt{\#}, P\texttt{\#}, QTY) 表示供应商 S\texttt{\#}为工程 J\texttt{\#}供应了 QTY 数量的零件 P\texttt{\#}
   \protect\\ 请写出下列查询的关系代数表达式：}
 \subparagraph{(1)} 求每个供应商的供应商号以及该供应商供应的平均零件数量；
 \subparagraph{(2)} 求每个工程的工程号以及该工程中所使用的每种零件的零件号以及数量；
@@ -102,36 +102,36 @@
 \subparagraph{(1)}
 \begin{Large}
     \begin{equation*}
-        \mathcal{G}_{\text{S\#}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}\big(\Pi_{\text{S\#}, \text{QTY}}(\text{S} \Join \text{SPJ})\big)
+        \mathcal{G}_{\text{S\texttt{\#}}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}\big(\Pi_{\text{S\texttt{\#}}, \text{QTY}}(\text{S} \Join \text{SPJ})\big)
     \end{equation*}
 \end{Large}
 
 \subparagraph{(2)}
 \begin{Large}
     \begin{equation*}
-        \mathcal{G}_{\text{J\#}, \text{P\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
+        \mathcal{G}_{\text{J\texttt{\#}}, \text{P\texttt{\#}}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
     \end{equation*}
 \end{Large}
 
 \subparagraph{(3)}
 \begin{Large}
     \begin{equation*}
-        \Pi_{\text{S\#}, \text{sname}}\Big(\sigma_{\text{QTY} > 300}\big(\mathcal{G}_{\text{S\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})\big)\Big)
+        \Pi_{\text{S\texttt{\#}}, \text{sname}}\Big(\sigma_{\text{QTY} > 300}\big(\mathcal{G}_{\text{S\texttt{\#}}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})\big)\Big)
     \end{equation*}
 \end{Large}
 
 \subparagraph{(4)}
 \begin{Large}
     \begin{align*}
-        \text{J}   & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\}                                                                                                                                          \\
-        \text{SPJ} & \leftarrow \text{SPJ} \cup \Big(\Pi_{\text{J\#}}\big(\sigma_{\text{J\#} = \text{'J00'}}(\text{J})\big) \times \mathcal{G}_{\text{S\#}, \text{P\#}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})\Big)
+        \text{J}   & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\}                                                                                                                                                                              \\
+        \text{SPJ} & \leftarrow \text{SPJ} \cup \Big(\Pi_{\text{J\texttt{\#}}}\big(\sigma_{\text{J\texttt{\#}} = \text{'J00'}}(\text{J})\big) \times \mathcal{G}_{\text{S\texttt{\#}}, \text{P\texttt{\#}}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})\Big)
     \end{align*}
 \end{Large}
 
 \subparagraph{(5)}
 \begin{Large}
     \begin{equation*}
-        \text{S} \leftarrow \bigg(\text{S} - \sigma_{\text{S\#} = \text{'S1'}}(\text{S}) \cup \Big(\Pi_{\text{S\#}, \text{sname}, \text{status}, \text{'合肥'}}\big(\sigma_{\text{S\#} = \text{'S1'}}(\text{S})\big)\Big)\bigg)
+        \text{S} \leftarrow \bigg(\text{S} - \sigma_{\text{S\texttt{\#}} = \text{'S1'}}(\text{S}) \cup \Big(\Pi_{\text{S\texttt{\#}}, \text{sname}, \text{status}, \text{'合肥'}}\big(\sigma_{\text{S\texttt{\#}} = \text{'S1'}}(\text{S})\big)\Big)\bigg)
     \end{equation*}
 \end{Large}
 

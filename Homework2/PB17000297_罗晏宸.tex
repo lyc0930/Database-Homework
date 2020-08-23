@@ -29,12 +29,13 @@
 交$\cap$、自然连接$\Join$、Theta 连接$\Join_{\theta}$、除$\div$可分别用基本运算表示如下：
 
 \begin{Large}
-\begin{align*}
-    r \cap s & = r - (r - s) \\
-    r \Join s & = \Pi_{R \cup S}\left(\sigma_{r.A_1 = s.A_1 \land r.A_2 = s.A_2 \land \cdots \land r.A_n = s.A_n}(r \times s)\right) \\
-    r \Join_{\theta} s & = \sigma_{\theta}(r \times s) \\
-    r \div s & = \Pi_{R - S}(r) - \Pi_{R - S}\Big(\big(\Pi_{R - S}(r) \times s\big) - \Pi_{R - S}(r)\Big)
-\end{align*}
+    \begin{align*}
+        r \cap s           & = r - (r - s)                                                                                                        \\
+        r \Join s          & = \Pi_{R \cup S}\left(\sigma_{r.A_1 = s.A_1 \land r.A_2 = s.A_2 \land \cdots \land r.A_n = s.A_n}(r \times s)\right) \\
+        r \Join_{\theta} s & = \sigma_{\theta}(r \times s)                                                                                        \\
+        r \div s           & = \Pi_{R \setminus S}(r) - \Pi_{R \setminus S}\Big(\Pi_{R \setminus S}(r) \times s - R\Big)
+        % r \div s           & = \Pi_{R \setminus S}(r) - \Pi_{R \setminus S}\Big(\big(\Pi_{R \setminus S}(r) \times s\big) - \Pi_{R \setminus S}(r)\Big)
+    \end{align*}
 \end{Large}
 
 其中$r(R)$和$s(S)$是两个关系，$\theta$是模式$R \cup S$的属性上的谓词，对于除操作，还应有$S \subseteq R$。
@@ -49,48 +50,48 @@
 \paragraph{解}
 \subparagraph{(1)}
 { \kaishu
-\begin{Large}
-\begin{equation*}
-    \Pi_{\text{工作单位}, \text{地址}}\big(\sigma_{\text{姓名} = \text{'Rose'}}(\text{读者})\big)
-\end{equation*}
-\end{Large}
+    \begin{Large}
+        \begin{equation*}
+            \Pi_{\text{工作单位}, \text{地址}}\big(\sigma_{\text{姓名} = \text{'Rose'}}(\text{读者})\big)
+        \end{equation*}
+    \end{Large}
 
-\subparagraph{(2)}
-\begin{Large}
-\begin{equation*}
-    \Pi_{\text{书名}, \text{借期}}\big(\sigma_{\text{姓名} = \text{'Rose'}}(\text{图书} \Join \text{借阅} \Join \text{读者})\big)
-\end{equation*}
-\end{Large}
+    \subparagraph{(2)}
+    \begin{Large}
+        \begin{equation*}
+            \Pi_{\text{书名}, \text{借期}}\big(\sigma_{\text{姓名} = \text{'Rose'}}(\text{图书} \Join \text{借阅} \Join \text{读者})\big)
+        \end{equation*}
+    \end{Large}
 
-\subparagraph{(3)}
-\begin{Large}
-\begin{equation*}
-    \Pi_{\text{姓名}}(\text{读者}) - \Pi_{\text{姓名}}(\text{读者} \Join \text{借阅})
-\end{equation*}
-\end{Large}
+    \subparagraph{(3)}
+    \begin{Large}
+        \begin{equation*}
+            \Pi_{\text{姓名}}(\text{读者}) - \Pi_{\text{姓名}}(\text{读者} \Join \text{借阅})
+        \end{equation*}
+    \end{Large}
 
-\subparagraph{(4)}
-\begin{Large}
-\begin{equation*}
-    \Pi_{\text{书名}, \text{单价}}\big(\sigma_{\text{作者} = \text{'Ullman'}}(\text{图书})\big)
-\end{equation*}
-\end{Large}
+    \subparagraph{(4)}
+    \begin{Large}
+        \begin{equation*}
+            \Pi_{\text{书名}, \text{单价}}\big(\sigma_{\text{作者} = \text{'Ullman'}}(\text{图书})\big)
+        \end{equation*}
+    \end{Large}
 
-\subparagraph{(5)}
-\begin{Large}
-\begin{equation*}
-    \Pi_{\text{姓名}}\Big(\sigma_{\textit{book\_count} > 3}\big(\mathcal{G}_{\text{姓名}, \textbf{count-distinct}(\text{图书号}) \rightarrow \textit{book\_count}}(\text{读者} \Join \text{借阅})\big)\Big)
-\end{equation*}
-\end{Large}
+    \subparagraph{(5)}
+    \begin{Large}
+        \begin{equation*}
+            \Pi_{\text{姓名}}\Big(\sigma_{\textit{book\_count} > 3}\big(\mathcal{G}_{\text{姓名}, \textbf{count-distinct}(\text{图书号}) \rightarrow \textit{book\_count}}(\text{读者} \Join \text{借阅})\big)\Big)
+        \end{equation*}
+    \end{Large}
 }
 
 
 \section{T1 教材的首页给出了一个供应商、零件、工程数据库：
-\protect\\ \indent 供应商：S (S\#, sname, status, city)
-\protect\\ \indent 零件：P (P\#, pname, color, weight, city)
-\protect\\ \indent 工程：J (J\#, jname, city)
-\protect\\ \indent 供应：SPJ (S\#, J\#, P\#, QTY) 表示供应商 S\#为工程 J\#供应了 QTY 数量的零件 P\#
-\protect\\ 请写出下列查询的关系代数表达式：}
+  \protect\\ \indent 供应商：S (S\#, sname, status, city)
+  \protect\\ \indent 零件：P (P\#, pname, color, weight, city)
+  \protect\\ \indent 工程：J (J\#, jname, city)
+  \protect\\ \indent 供应：SPJ (S\#, J\#, P\#, QTY) 表示供应商 S\#为工程 J\#供应了 QTY 数量的零件 P\#
+  \protect\\ 请写出下列查询的关系代数表达式：}
 \subparagraph{(1)} 求每个供应商的供应商号以及该供应商供应的平均零件数量；
 \subparagraph{(2)} 求每个工程的工程号以及该工程中所使用的每种零件的零件号以及数量；
 \subparagraph{(3)} 求供应零件总量在 300 以上的供应商号和供应商名字；
@@ -100,38 +101,38 @@
 \paragraph{解}
 \subparagraph{(1)}
 \begin{Large}
-\begin{equation*}
-    \mathcal{G}_{\text{S\#}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}\big(\Pi_{\text{S\#}, \text{QTY}}(\text{S} \Join \text{SPJ})\big)
-\end{equation*}
+    \begin{equation*}
+        \mathcal{G}_{\text{S\#}, \textbf{avg}(\text{QTY}) \rightarrow \text{AVGQTY}}\big(\Pi_{\text{S\#}, \text{QTY}}(\text{S} \Join \text{SPJ})\big)
+    \end{equation*}
 \end{Large}
 
 \subparagraph{(2)}
 \begin{Large}
-\begin{equation*}
-    \mathcal{G}_{\text{J\#}, \text{P\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
-\end{equation*}
+    \begin{equation*}
+        \mathcal{G}_{\text{J\#}, \text{P\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})
+    \end{equation*}
 \end{Large}
 
 \subparagraph{(3)}
 \begin{Large}
-\begin{equation*}
-    \Pi_{\text{S\#}, \text{sname}}\Big(\sigma_{\text{QTY} > 300}\big(\mathcal{G}_{\text{S\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})\big)\Big)
-\end{equation*}
+    \begin{equation*}
+        \Pi_{\text{S\#}, \text{sname}}\Big(\sigma_{\text{QTY} > 300}\big(\mathcal{G}_{\text{S\#}, \textbf{sum}(\text{QTY}) \rightarrow \text{QTY}}(\text{S} \Join \text{SPJ})\big)\Big)
+    \end{equation*}
 \end{Large}
 
 \subparagraph{(4)}
 \begin{Large}
-\begin{align*}
-    \text{J} & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\} \\
-    \text{SPJ} & \leftarrow \text{SPJ} \cup \Big(\Pi_{\text{J\#}}\big(\sigma_{\text{J\#} = \text{'J00'}}(\text{J})\big) \times \mathcal{G}_{\text{S\#}, \text{P\#}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})\Big)
-\end{align*}
+    \begin{align*}
+        \text{J}   & \leftarrow \text{J} \cup \{\text{'J00'},\, \text{'Sam'},\, \text{'Hefei'}\}                                                                                                                                          \\
+        \text{SPJ} & \leftarrow \text{SPJ} \cup \Big(\Pi_{\text{J\#}}\big(\sigma_{\text{J\#} = \text{'J00'}}(\text{J})\big) \times \mathcal{G}_{\text{S\#}, \text{P\#}, \textbf{max}(\text{QTY}) \rightarrow \text{QTY}}(\text{SPJ})\Big)
+    \end{align*}
 \end{Large}
 
 \subparagraph{(5)}
 \begin{Large}
-\begin{equation*}
-    \text{S} \leftarrow \bigg(\text{S} - \sigma_{\text{S\#} = \text{'S1'}}(\text{S}) \cup \Big(\Pi_{\text{S\#}, \text{sname}, \text{status}, \text{'合肥'}}\big(\sigma_{\text{S\#} = \text{'S1'}}(\text{S})\big)\Big)\bigg)
-\end{equation*}
+    \begin{equation*}
+        \text{S} \leftarrow \bigg(\text{S} - \sigma_{\text{S\#} = \text{'S1'}}(\text{S}) \cup \Big(\Pi_{\text{S\#}, \text{sname}, \text{status}, \text{'合肥'}}\big(\sigma_{\text{S\#} = \text{'S1'}}(\text{S})\big)\Big)\bigg)
+    \end{equation*}
 \end{Large}
 
 \end{document}

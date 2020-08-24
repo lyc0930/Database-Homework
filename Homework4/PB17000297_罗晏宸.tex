@@ -128,14 +128,17 @@ $R_3(A,\ F,\ G)$，$F_3 = \varnothing$，主码为$A,\ F,\  G$，没有非主属
     \item 每组涉及的所有属性作为一个关系模式输出，\\ 得到$R$的保持函数依赖的3NF分解$q = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G)\}$
     \item $R$的主码为$A,\ F,\  G$
     \item $p = q \cup R_5(A,\ F,\ G) = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G),\ R_5(A,\ F,\ G)\}$
+    \item 由于$\{F,\ G\}$是$\{A,\ F,\ G\}$的子集，在$p$中去掉$R_4(F,\ G)$
+    \item 得到$R$的无损连接并且保持函数依赖的3NF分解 \\ $p = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_5(A,\ F,\ G)\}$
 \end{enumerate}
 
 \subparagraph{(4)}
 \begin{enumerate}[label = \emph{\alph*}.]
-    \item $D = \{R\}$，$F = \{A \rightarrow B,\ B \rightarrow C,\ C \rightarrow D,\ A \rightarrow E\}$，候选码为$A,\ F,\  G$
-    \item $\{B \rightarrow C\}$不满足BCNF要求，$\{R_1(A,\ B,\ D,\ E,\ F,\ G),\ R_2(B,\ C)\}$
-    \item $R_1$主码为$A,\ F,\  G$
-    \item $\{B \rightarrow D\}$不满足BCNF要求，$\{R_1(A,\ B,\ E,\ F,\ G),\ R_2(B,\ D),\ R_3(B,\ C)\}$
-    \item 满足BCNF要求，结束
+    \item $p = \{R\}$，$F = \{A \rightarrow B,\ B \rightarrow C,\ C \rightarrow D,\ A \rightarrow E\}$
+    \item $\{B \rightarrow C\}$不满足BCNF定义，分解$R$ \\ $p = \{R_1(A,\ B,\ D,\ E,\ F,\ G),\ R_2(B,\ C)\}$
+    \item $R_1$中$\{B \rightarrow D\}$不满足BCNF，分解$R_1$ \\ $p = \{R_3(A,\ B,\ E,\ F,\ G),\ R_4(B,\ D),\ R_2(B,\ C)\}$
+    \item $R_3$中$\{A \rightarrow B\}$不满足BCNF，分解$R_3$ \\ $p = \{R_5(A,\ B),\ R_6(A,\ E,\ F,\ G),\ R_4(B,\ D),\ R_2(B,\ C)\}$
+    \item $R_6$中$\{A \rightarrow E\}$不满足BCNF，分解$R_6$ \\ $p = \{R_5(A,\ B),\ R_7(A,\ E),\ R_8(A,\ F,\ G),\ R_4(B,\ D),\ R_2(B,\ C)\}$
+    \item $p$中各模式均满足BCNF，结束
 \end{enumerate}
 \end{document}

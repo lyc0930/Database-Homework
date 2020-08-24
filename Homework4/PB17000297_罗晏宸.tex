@@ -53,10 +53,13 @@
 
 \paragraph{解}
 \subparagraph{(1)}
+最小函数依赖集为$F = \{A \rightarrow B,\ B \rightarrow C,\ B \rightarrow E,\ A \rightarrow D,\ E \rightarrow A\}$
+\par
 首先利用分解律
 \begin{equation*}
     F = \{A \rightarrow B,\ A \rightarrow C,\ B \rightarrow C,\ B \rightarrow E,\ AB \rightarrow C,\ E \rightarrow A,\ AC \rightarrow D,\ AC \rightarrow E\}
 \end{equation*}
+\par
 再消去左部冗余属性
 \begin{align*}
     A \rightarrow B,\ A \rightarrow AB,\ AB \rightarrow C & \Rightarrow A \rightarrow C \\
@@ -66,7 +69,8 @@
 \begin{equation*}
     F = \{A \rightarrow B,\ A \rightarrow C,\ B \rightarrow C,\ B \rightarrow E,\ A \rightarrow D,\ A \rightarrow E,\ E \rightarrow A\}
 \end{equation*}
-最后消去冗余依赖
+\par
+最后消去冗余函数依赖
 \begin{align*}
     A \rightarrow B,\ B \rightarrow C & \Rightarrow \bcancel{A \rightarrow C} \\
     A \rightarrow B,\ B \rightarrow E & \Rightarrow \bcancel{A \rightarrow E}
@@ -110,18 +114,19 @@ $A$、$B$和$E$是候选码，证明如下
 主码为$A,\ F,\  G$，但有$A \rightarrow B$，因此$R$不是2NF的。
 
 \subparagraph{(2)}
-$R_1(A,\ B,\ E)$，$F_1 = \{AB \rightarrow E,\ A \rightarrow B\}$，主码为$A$，满足3NF；
-$R_2(B,\ C,\ D)$，$F_2 = \{B \rightarrow C,\ C \rightarrow D\}$，主码为$B$，满足2NF，但存在传递依赖，不满足3NF；
-$R_3(A,\ F,\ G)$，$F_3 = \varnothing$，主码为$A,\ F,\  G$，没有非主属性，属满足BCNF；
+最高满足第二范式。\par
+$R_1(A,\ B,\ E)$，$F_1 = \{AB \rightarrow E,\ A \rightarrow B\}$，主码为$A$，满足3NF；\par
+$R_2(B,\ C,\ D)$，$F_2 = \{B \rightarrow C,\ C \rightarrow D\}$，主码为$B$，满足2NF，但存在传递依赖，不满足3NF；\par
+$R_3(A,\ F,\ G)$，$F_3 = \varnothing$，主码为$A,\ F,\  G$，没有非主属性，故满足BCNF；\par
 因此该数据库模式最高满足第二范式。
 
 \subparagraph{(3)}
 \begin{enumerate}[label = \emph{\alph*}.]
     \item $R$的最小函数依赖集$F = \{A \rightarrow B,\ B \rightarrow C,\ C \rightarrow D,\ A \rightarrow E\}$
-    \item $R'(F,\ G)$，$U = \{A,\ B,\ C,\ D,\ E\}$
-    \item $F_1 = \{A \rightarrow B,\ A \rightarrow E\}$，$F_2 = \{B \rightarrow C\}$，$F_3 = \{C \rightarrow D\}$
-    \item $q = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G)\}$
-    \item 主码为$A,\ F,\  G$
+    \item 不在$F$中出现的属性组成关系模式$R'(F,\ G)$，去掉这些属性后得到$U = \{A,\ B,\ C,\ D,\ E\}$
+    \item 对$F$按相同的左部分组，$F_1 = \{A \rightarrow B,\ A \rightarrow E\}$，$F_2 = \{B \rightarrow C\}$，$F_3 = \{C \rightarrow D\}$
+    \item 每组涉及的所有属性作为一个关系模式输出，\\ 得到$R$的保持函数依赖的3NF分解$q = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G)\}$
+    \item $R$的主码为$A,\ F,\  G$
     \item $p = q \cup R_5(A,\ F,\ G) = \{R_1(A,\ B,\ E),\ R_2(B,\ C),\ R_3(C,\ D),\ R_4(F,\ G),\ R_5(A,\ F,\ G)\}$
 \end{enumerate}
 

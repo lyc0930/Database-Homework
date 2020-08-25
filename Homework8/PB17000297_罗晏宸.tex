@@ -86,17 +86,17 @@
 \section{判断下面的并发调度是否冲突可串？如果是，请给出冲突等价的串行调度事务顺序；如果不是，请解释理由。}
 \begin{large}
     $$
-        w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ w_1(D)\ w_3(B)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B)
+        w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ w_1(D)\ w_3(B)\ r_4(B)\ r_4(C)\ w_4(C)\ w_4(B)
     $$
 \end{large}
 \paragraph{解}
 不是冲突可串的，尝试给出调度事务顺序：
 \begin{large}
     \begin{align*}
-        w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ \tikzmark[blue]{Anchor2-a}{$w_1(D)$}\ \tikzmark[blue]{Anchor2-b}{$w_3(B)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        w_3(D)\ r_1(A)\ w_2(A)\ \tikzmark[blue]{Anchor3-a}{$r_4(A)$}\ \tikzmark[blue]{Anchor3-b}{$r_1(C)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ w_1(D)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        w_3(D)\ r_1(A)\ w_2(A)\ r_1(C)\ \tikzmark[blue]{Anchor4-a}{$r_4(A)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ \tikzmark[blue]{Anchor4-b}{$w_1(D)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
-        \tikzmark[red]{Anchor5-a}{$w_3(D)$}\ r_1(A)\ \tikzmark[red]{Anchor5-b}{$w_2(A)$}\ r_1(C)\ w_1(D)\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) %\\
+        w_3(D)\ r_1(A)\ w_2(A)\ r_4(A)\ r_1(C)\ w_2(B)\ r_3(B)\ r_3(A)\ \tikzmark[blue]{Anchor2-a}{$w_1(D)$}\ \tikzmark[blue]{Anchor2-b}{$w_3(B)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w_4(B) \\
+        w_3(D)\ r_1(A)\ w_2(A)\ \tikzmark[blue]{Anchor3-a}{$r_4(A)$}\ \tikzmark[blue]{Anchor3-b}{$r_1(C)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ w_1(D)\ r_4(B)\ r_4(C)\ w_4(C)\ w_4(B) \\
+        w_3(D)\ r_1(A)\ w_2(A)\ r_1(C)\ \tikzmark[blue]{Anchor4-a}{$r_4(A)$}\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ \tikzmark[blue]{Anchor4-b}{$w_1(D)$}\ r_4(B)\ r_4(C)\ w_4(C)\ w_4(B) \\
+        \tikzmark[red]{Anchor5-a}{$w_3(D)$}\ r_1(A)\ \tikzmark[red]{Anchor5-b}{$w_2(A)$}\ r_1(C)\ w_1(D)\ w_2(B)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w_4(B) %\\
         % w_2(A)\ r_1(A)\ \tikzmark[blue]{Anchor6-a}{$w_3(D)$}\ r_1(C)\ w_1(D)\ \tikzmark[blue]{Anchor6-b}{$w_2(B)$}\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
         % w_2(A)\ \tikzmark[blue]{Anchor7-a}{$r_1(A)$}\ \tikzmark[blue]{Anchor7-b}{$w_2(B)$}\ r_1(C)\ w_1(D)\ w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)\ r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B) \\
         % \underbrace{w_2(A)\ w_2(B)}_{\displaystyle T_2}\,\underbrace{r_1(A)\ r_1(C)\ w_1(D)}_{\displaystyle T_1}\,\underbrace{w_3(D)\ r_3(B)\ r_3(A)\ w_3(B)}_{\displaystyle T_3}\,\underbrace{r_4(A)\ r_4(B)\ r_4(C)\ w_4(C)\ w4(B)}_{\displaystyle T_4}

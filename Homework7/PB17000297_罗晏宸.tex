@@ -38,11 +38,11 @@
     basicstyle = \ttfamily,
     keywordstyle = \bfseries,
     linewidth = \linewidth,
-    xleftmargin=.2\textwidth,
+    xleftmargin=.1\textwidth,
     xrightmargin=.2\textwidth,
     numbers = none,
     frame = none,
-    emph = {Redo, Undo, write, output, Abort},
+    emph = {Redo, Undo, write, output, Abort, Write, log},
     emphstyle = \textbf,
     mathescape = true,
 }
@@ -126,43 +126,43 @@ ACID 性质：原子性、一致性、隔离性、永久性。以下是一些违
 
     \paragraph{解}
     \subparagraph{\textcircled{1}}
-    \lstinline[style = transaction]{Redo: $T_1$}，\lstinline[style = transaction]{Redo: $T_2$, $T_3$}
+    \lstinline[style = transaction]{Redo: $T_1$}，\lstinline[style = transaction]{Undo: $T_2$, $T_3$}
     ，操作：
     \begin{lstlisting}[style = transaction]
-Redo:   write(A, 40); output(A);
-        write(B, 60); output(B);
-        write(A, 75); output(A);
-Undo:   write(E, 50); output(E);
-        write(D, 40); output(D);
-        write(C, 30); output(C);
-        <Abort, $T_2$>
-        <Abort, $T_3$>
+Undo:       write(E, 50); output(E);
+            write(D, 40); output(D);
+            write(C, 30); output(C);
+Redo:       write(A, 40); output(A);
+            write(B, 60); output(B);
+            write(A, 75); output(A);
+Write log:  <Abort, $T_2$>
+Write log:  <Abort, $T_3$>
 \end{lstlisting}
     结果为：A: 75, B: 60, C: 30, D: 40, E: 50, F: 未知, G: 未知
 
     \subparagraph{\textcircled{2}}
-    \lstinline[style = transaction]{Redo: $T_1$, $T_2$}，\lstinline[style = transaction]{Redo: $T_3$}
+    \lstinline[style = transaction]{Redo: $T_1$, $T_2$}，\lstinline[style = transaction]{Undo: $T_3$}
 ，操作：
 \begin{lstlisting}[style = transaction]
-Redo:   write(A, 40); output(A);
-        write(B, 60); output(B);
-        write(A, 75); output(A);
-        write(C, 50); output(C);
-        write(D, 80); output(D);
-        write(D, 65); output(D);
-        write(C, 75); output(C);
-Undo:   write(E, 50); output(E);
-        <Abort, $T_3$>
+Undo:       write(E, 50); output(E);
+Redo:       write(A, 40); output(A);
+            write(B, 60); output(B);
+            write(A, 75); output(A);
+            write(C, 50); output(C);
+            write(D, 80); output(D);
+            write(D, 65); output(D);
+            write(C, 75); output(C);
+Write log:  <Abort, $T_3$>
 \end{lstlisting}
 结果为：A: 75, B: 60, C: 75, D: 65, E: 50, F: 未知, G: 未知
 
-\subparagraph{\textcircled{1}}
-\lstinline[style = transaction]{Redo: $T_4$}
+\subparagraph{\textcircled{3}}
+\lstinline[style = transaction]{Undo: $T_4$}
 ，操作：
 \begin{lstlisting}[style = transaction]
-Undo:   write(F, 60); output(F);
-        write(G, 70); output(G);
-        <Abort, $T_4$>
+Undo:       write(F, 60); output(F);
+            write(G, 70); output(G);
+Write log:  <Abort, $T_4$>
 \end{lstlisting}
 结果为：A: 75, B: 60, C: 75, D: 65, E: 90, F: 60, G: 70
 \end{document}
